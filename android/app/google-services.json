@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "28923839136",
+    "firebase_url": "https://little-paws-878df-default-rtdb.firebaseio.com",
+    "project_id": "little-paws-878df",
+    "storage_bucket": "little-paws-878df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28923839136:android:d60463ecd3d2f072783fc5",
+        "android_client_info": {
+          "package_name": "com.littlepaws"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28923839136-srkpdt4h2dbui7675itrpl8vr145bfml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.littlepaws",
+            "certificate_hash": "ea39385fb2f6bf5ac13ed7cc562a73648dcec10f"
+          }
+        },
+        {
+          "client_id": "28923839136-n5bghug7ie3qb264953piq9k1nqoo1ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-igumUVOCQUFzcft7P0u_rYNUZ-vDjg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28923839136-n5bghug7ie3qb264953piq9k1nqoo1ph.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "28923839136-vt45e45du95l7qtuoa9pbgvu5qrj6sv2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.littlepaws"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
