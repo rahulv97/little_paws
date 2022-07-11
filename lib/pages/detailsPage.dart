@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 import 'package:little_paws/pages/addNew.dart';
+import 'package:little_paws/pages/editAds.dart';
 import 'package:little_paws/showToast.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -293,19 +294,34 @@ class _DetailsPageState extends State<DetailsPage> {
                           onTap: () {
                             if (usr == FirebaseAuth.instance.currentUser!.uid) {
                               //ShowToast().showToast("Editing");
-                              Navigator.pushNamed(context, "editAd",
-                                  arguments: {
-                                    "ad_id": ad_id,
-                                    "pet_name": pet_name,
-                                    "pet_type": pet_type,
-                                    "breed": breed,
-                                    "dob": pet_dob,
-                                    "gender": pet_gender,
-                                    "weight": pet_weight,
-                                    "img_url": img_url,
-                                    "price": price,
-                                    "ad_status": status
-                                  });
+                              // Navigator.pushNamed(context, "editAd",
+                              //     arguments: {
+                              //       "ad_id": ad_id,
+                              //       "pet_name": pet_name,
+                              //       "pet_type": pet_type,
+                              //       "breed": breed,
+                              //       "dob": pet_dob,
+                              //       "gender": pet_gender,
+                              //       "weight": pet_weight,
+                              //       "img_url": img_url,
+                              //       "price": price,
+                              //       "ad_status": status
+                              //     });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditAd(
+                                            pet_name: pet_name,
+                                            ad_id: ad_id,
+                                            pet_type: pet_type,
+                                            breed: breed,
+                                            dob: pet_dob,
+                                            gender: pet_gender,
+                                            weight: pet_weight,
+                                            img_url: img_url,
+                                            price: price,
+                                            ad_status: status,
+                                          )));
                             } else {
                               checkChat().then((value) {
                                 ShowToast().showToast(value);

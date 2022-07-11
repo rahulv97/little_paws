@@ -1,9 +1,11 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 import 'package:little_paws/pages/addNew.dart';
+import 'package:little_paws/showToast.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -42,11 +44,40 @@ class Advertisements {
       required this.price});
 }
 
+Future add_myFav(String fav_id) async {
+  DatabaseReference addFavRef = FirebaseDatabase.instance.ref("users/" +
+      FirebaseAuth.instance.currentUser!.uid +
+      "/favourites/" +
+      fav_id);
+  await addFavRef.set({fav_id: fav_id});
+}
+
+Future rem_fav(String fav_id) async {
+  DatabaseReference addFavRef = FirebaseDatabase.instance
+      .ref("users/" + FirebaseAuth.instance.currentUser!.uid + "/favourites/");
+  await addFavRef.child(fav_id).remove();
+}
+
 List<Advertisements> advertisements = [];
+
+List<String> my_favourits = [];
+
+List<Color> fav_color = [];
 
 class _HomePageState extends State<HomePage> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    my_favourits.clear();
+    DatabaseReference favDatabase = FirebaseDatabase.instance
+        .ref("users/" + FirebaseAuth.instance.currentUser!.uid + "/favourites");
+    favDatabase.onValue.listen((event) {
+      for (var data in event.snapshot.children) {
+        my_favourits.add(data.key.toString());
+      }
+    });
+    setState(() {
+      my_favourits;
+    });
     getAds() {
       DatabaseReference databaseReference =
           FirebaseDatabase.instance.ref("advertisements");
@@ -83,6 +114,14 @@ class _HomePageState extends State<HomePage> {
         }
         setState(() {
           advertisements = advertisements.reversed.toList();
+          for (int i = 0; i < advertisements.length; i++) {
+            if (my_favourits.contains(advertisements[i].add_id)) {
+              fav_color.add(Colors.red);
+            } else {
+              fav_color.add(theme_color);
+            }
+            //fav_color.add(theme_color);
+          }
         });
 
         // print("Ads: " + advertisements[0].pet_dob);
@@ -90,6 +129,15 @@ class _HomePageState extends State<HomePage> {
       return advertisements;
     }
 
+    // TODO: implement initState
+
+    getAds();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -215,17 +263,22 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     const Text("Popular",
                         style: TextStyle(fontSize: 20, fontFamily: 'Bold')),
-                    Row(
-                      children: [
-                        const Text(
-                          "View All",
-                          style: TextStyle(fontFamily: 'Bold'),
-                        ),
-                        Image.asset(
-                          "assets/view_all.png",
-                          height: 28,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "allAds");
+                      },
+                      child: Row(
+                        children: [
+                          const Text(
+                            "View All",
+                            style: TextStyle(fontFamily: 'Bold'),
+                          ),
+                          Image.asset(
+                            "assets/view_all.png",
+                            height: 28,
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -279,10 +332,26 @@ class _HomePageState extends State<HomePage> {
                                       borderRadius: BorderRadius.circular(500),
                                       color: Colors.white,
                                     ),
-                                    child: Icon(
-                                      Icons.favorite,
-                                      color: theme_color,
-                                      size: 20,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (fav_color[index] == Colors.red) {
+                                          rem_fav(advertisements[index].add_id);
+                                          setState(() {
+                                            fav_color[index] = theme_color;
+                                          });
+                                        } else {
+                                          add_myFav(
+                                              advertisements[index].add_id);
+                                          setState(() {
+                                            fav_color[index] = Colors.red;
+                                          });
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: fav_color[index],
+                                        size: 20,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -337,7 +406,7 @@ class _HomePageState extends State<HomePage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(getAds()[index].breed),
+                                Text(advertisements[index].breed),
                                 GestureDetector(
                                   onTap: () => Navigator.pushNamed(
                                       context, "details", arguments: {
@@ -373,7 +442,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
-                  itemCount: getAds().length,
+                  itemCount: advertisements.length,
                 )
               ]),
             )

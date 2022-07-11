@@ -62,26 +62,31 @@ class _MainPageState extends State<MainPage> {
             },
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                    // ignore: prefer_const_literals_to_create_immutables
-                    boxShadow: [
-                      const BoxShadow(
-                          color: Color.fromARGB(15, 0, 0, 0),
-                          blurRadius: 4,
-                          offset: Offset(4, 4))
-                    ],
-                  ),
-                  child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.notifications,
-                        color: theme_color,
-                      ))),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, "favourites");
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                      // ignore: prefer_const_literals_to_create_immutables
+                      boxShadow: [
+                        const BoxShadow(
+                            color: Color.fromARGB(15, 0, 0, 0),
+                            blurRadius: 4,
+                            offset: Offset(4, 4))
+                      ],
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Icon(
+                          Icons.favorite,
+                          color: theme_color,
+                        ))),
+              ),
             ),
             const SizedBox(
               width: 10,

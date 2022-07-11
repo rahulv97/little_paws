@@ -96,11 +96,11 @@ class _MenuPageState extends State<MenuPage> {
                         width: 20,
                       ),
                     ),
-                    Image.asset(
-                      "assets/notification_on.png",
-                      height: 20,
-                      width: 20,
-                    ),
+                    // Image.asset(
+                    //   "assets/notification_on.png",
+                    //   height: 20,
+                    //   width: 20,
+                    // ),
                   ],
                 ),
               ),
@@ -143,15 +143,6 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
-                      title: const Text("Testimonials"),
-                      leading: Image.asset(
-                        "assets/testinom_ic.png",
-                        height: 25,
-                      ),
-                      iconColor: Colors.white,
-                      textColor: Colors.white,
-                    ),
-                    ListTile(
                       title: const Text("Blogs"),
                       leading: Image.asset(
                         "assets/blog_ic.png",
@@ -160,7 +151,10 @@ class _MenuPageState extends State<MenuPage> {
                       iconColor: Colors.white,
                       textColor: Colors.white,
                     ),
-                    const ListTile(
+                    ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, "favourites");
+                      },
                       title: const Text("Favourite"),
                       leading: const Icon(
                         Icons.favorite,
@@ -183,6 +177,15 @@ class _MenuPageState extends State<MenuPage> {
                       leading: Image.asset(
                         "assets/setting_ic.png",
                         height: 25,
+                      ),
+                      iconColor: Colors.white,
+                      textColor: Colors.white,
+                    ),
+                    ListTile(
+                      title: const Text("Help & Support"),
+                      leading: Icon(
+                        Icons.help,
+                        size: 25,
                       ),
                       iconColor: Colors.white,
                       textColor: Colors.white,

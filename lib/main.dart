@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:little_paws/onboarding/onboarding1.dart';
 import 'package:little_paws/onboarding/onboarding2.dart';
 import 'package:little_paws/onboarding/onboarding3.dart';
+import 'package:little_paws/pages/allAds.dart';
 import 'package:little_paws/pages/createProfile.dart';
 import 'package:little_paws/pages/dashboard.dart';
 import 'package:little_paws/pages/detailsPage.dart';
 import 'package:little_paws/pages/editAds.dart';
+import 'package:little_paws/pages/favourites.dart';
 import 'package:little_paws/pages/forgetpass.dart';
 import 'package:little_paws/pages/loginScreen.dart';
 import 'package:little_paws/pages/message.dart';
@@ -69,6 +71,8 @@ class MyApp extends StatelessWidget {
         "details": ((context) => const DetailsPage()),
         "messageScreen": (context) => const MessageScreen(),
         "editAd":(context) => const EditAd(),
+        "allAds":(context) => const AllAds(),
+        "favourites":(context) => const Favourites(),
       },
     );
   }
@@ -101,6 +105,8 @@ class MyApp1 extends StatelessWidget {
         "details": ((context) => const DetailsPage()),
         "messageScreen": (context) => const MessageScreen(),
         "editAd":(context) => const EditAd(),
+        "allAds":(context) => const AllAds(),
+        "favourites":(context) => const Favourites(),
       },
     );
   }
@@ -133,6 +139,8 @@ class MyApp2 extends StatelessWidget {
         "details": ((context) => const DetailsPage()),
         "messageScreen": (context) => const MessageScreen(),
         "editAd":(context) => const EditAd(),
+        "allAds":(context) => const AllAds(),
+        "favourites":(context) => const Favourites(),
       },
     );
   }
