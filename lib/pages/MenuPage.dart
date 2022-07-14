@@ -125,6 +125,9 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, "dogAds");
+                      },
                       title: const Text("Dog"),
                       leading: Image.asset(
                         "assets/dog_ic.png",
@@ -134,6 +137,9 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, "catAds");
+                      },
                       title: const Text("Cat"),
                       leading: Image.asset(
                         "assets/cat_ic.png",
@@ -182,6 +188,9 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, "contactUs");
+                      },
                       title: const Text("Help & Support"),
                       leading: Icon(
                         Icons.help,

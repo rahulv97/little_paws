@@ -6,15 +6,20 @@ import 'package:little_paws/onboarding/onboarding1.dart';
 import 'package:little_paws/onboarding/onboarding2.dart';
 import 'package:little_paws/onboarding/onboarding3.dart';
 import 'package:little_paws/pages/allAds.dart';
+import 'package:little_paws/pages/catAds.dart';
+import 'package:little_paws/pages/contactUs.dart';
 import 'package:little_paws/pages/createProfile.dart';
 import 'package:little_paws/pages/dashboard.dart';
 import 'package:little_paws/pages/detailsPage.dart';
+import 'package:little_paws/pages/dogAds.dart';
 import 'package:little_paws/pages/editAds.dart';
 import 'package:little_paws/pages/favourites.dart';
 import 'package:little_paws/pages/forgetpass.dart';
+import 'package:little_paws/pages/ind_editProfile.dart';
 import 'package:little_paws/pages/loginScreen.dart';
 import 'package:little_paws/pages/message.dart';
 import 'package:little_paws/pages/registerScreen.dart';
+import 'package:little_paws/pages/search_screen.dart';
 import 'package:little_paws/pages/shopRegister.dart';
 import 'package:little_paws/pages/splashScreen.dart';
 import 'package:little_paws/pages/userCategory.dart';
@@ -40,12 +45,8 @@ void main() async {
   }
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  
 
   // This widget is the root of your application.
   @override
@@ -70,9 +71,14 @@ class MyApp extends StatelessWidget {
         "dashboard": (context) => const Dashboard(),
         "details": ((context) => const DetailsPage()),
         "messageScreen": (context) => const MessageScreen(),
-        "editAd":(context) => const EditAd(),
-        "allAds":(context) => const AllAds(),
-        "favourites":(context) => const Favourites(),
+        "editAd": (context) => const EditAd(),
+        "allAds": (context) => const AllAds(),
+        "favourites": (context) => const Favourites(),
+        "dogAds": (context) => const DogAds(),
+        "catAds": (context) => const CatAds(),
+        "ind_editProfile": (context) => const IndEditProfile(),
+        "contactUs": (context) => const ContactUs(),
+        "searchScreen": (context) => const SearchScreen()
       },
     );
   }
@@ -104,9 +110,14 @@ class MyApp1 extends StatelessWidget {
         "dashboard": (context) => const Dashboard(),
         "details": ((context) => const DetailsPage()),
         "messageScreen": (context) => const MessageScreen(),
-        "editAd":(context) => const EditAd(),
-        "allAds":(context) => const AllAds(),
-        "favourites":(context) => const Favourites(),
+        "editAd": (context) => const EditAd(),
+        "allAds": (context) => const AllAds(),
+        "favourites": (context) => const Favourites(),
+        "dogAds": (context) => const DogAds(),
+        "catAds": (context) => const CatAds(),
+        "ind_editProfile": (context) => const IndEditProfile(),
+        "contactUs": (context) => const ContactUs(),
+        "searchScreen": (context) => const SearchScreen()
       },
     );
   }
@@ -138,9 +149,14 @@ class MyApp2 extends StatelessWidget {
         "dashboard": (context) => const Dashboard(),
         "details": ((context) => const DetailsPage()),
         "messageScreen": (context) => const MessageScreen(),
-        "editAd":(context) => const EditAd(),
-        "allAds":(context) => const AllAds(),
-        "favourites":(context) => const Favourites(),
+        "editAd": (context) => const EditAd(),
+        "allAds": (context) => const AllAds(),
+        "favourites": (context) => const Favourites(),
+        "dogAds": (context) => const DogAds(),
+        "catAds": (context) => const CatAds(),
+        "ind_editProfile": (context) => const IndEditProfile(),
+        "contactUs": (context) => const ContactUs(),
+        "searchScreen": (context) => const SearchScreen()
       },
     );
   }

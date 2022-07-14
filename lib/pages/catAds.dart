@@ -3,11 +3,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 
-class AllAds extends StatefulWidget {
-  const AllAds({Key? key}) : super(key: key);
+class CatAds extends StatefulWidget {
+  const CatAds({Key? key}) : super(key: key);
 
   @override
-  State<AllAds> createState() => _AllAdsState();
+  State<CatAds> createState() => _CatAdsState();
 }
 
 class Advertisements {
@@ -60,7 +60,7 @@ List<String> my_favourits = [];
 
 List<Advertisements> advertisements = [];
 
-class _AllAdsState extends State<AllAds> {
+class _CatAdsState extends State<CatAds> {
   @override
   void initState() {
     my_favourits.clear();
@@ -92,7 +92,8 @@ class _AllAdsState extends State<AllAds> {
 
           if (data.child("ad_status").value.toString() == "true") {
           } else {
-            advertisements.add(Advertisements(
+            if(data.child("pet_type").value.toString()== "Cat"){
+               advertisements.add(Advertisements(
                 image_url: data.child("img_url").value.toString(),
                 pet_name: data.child("pet_name").value.toString(),
                 breed: data.child("breed").value.toString(),
@@ -106,6 +107,8 @@ class _AllAdsState extends State<AllAds> {
                 user_id: data.child("user_id").value.toString(),
                 user_type: data.child("user_type").value.toString(),
                 price: data.child("price").value.toString()));
+            }
+           
           }
         }
         setState(() {
@@ -149,7 +152,7 @@ class _AllAdsState extends State<AllAds> {
         ],
         title: Center(
           child: Text(
-            "All Ads",
+            "Showing Cats",
             style: TextStyle(
               fontSize: 24,
               color: Colors.black,

@@ -225,49 +225,77 @@ class _MyProfileState extends State<MyProfile> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                                padding: EdgeInsets.all(10),
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 225, 232, 254),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset(
-                                  "assets/prof_msg.png",
-                                  width: 35,
-                                )),
-                            Container(
-                                padding: EdgeInsets.all(10),
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 255, 237, 189),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset(
-                                  "assets/prof_call.png",
-                                  width: 35,
-                                )),
-                            Container(
-                                padding: EdgeInsets.all(10),
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 226, 233, 254),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset(
-                                  "assets/buy_filter.png",
-                                  width: 35,
-                                )),
-                            Container(
-                                padding: EdgeInsets.all(10),
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 255, 237, 189),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset(
-                                  "assets/prof_set.png",
-                                ))
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "contactUs");
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 225, 232, 254),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.asset(
+                                    "assets/prof_msg.png",
+                                    width: 35,
+                                  )),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "catAds");
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 255, 237, 189),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.asset(
+                                    "assets/sell_filter.png",
+                                    width: 35,
+                                  )),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "dogAds");
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 226, 233, 254),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.asset(
+                                    "assets/buy_filter.png",
+                                    width: 35,
+                                  )),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (user_type == "ShopOwner") {
+                                  Navigator.pushNamed(
+                                      context, "ind_editProfile",
+                                      arguments: {"type": "ShopOwner"});
+                                } else {
+                                  Navigator.pushNamed(
+                                      context, "ind_editProfile",
+                                      arguments: {"type": "Individual"});
+                                }
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 255, 237, 189),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.asset(
+                                    "assets/prof_set.png",
+                                  )),
+                            )
                           ]),
                     ),
                     SizedBox(

@@ -3,11 +3,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 
-class AllAds extends StatefulWidget {
-  const AllAds({Key? key}) : super(key: key);
+class DogAds extends StatefulWidget {
+  const DogAds({Key? key}) : super(key: key);
 
   @override
-  State<AllAds> createState() => _AllAdsState();
+  State<DogAds> createState() => _DogAdsState();
 }
 
 class Advertisements {
@@ -60,7 +60,7 @@ List<String> my_favourits = [];
 
 List<Advertisements> advertisements = [];
 
-class _AllAdsState extends State<AllAds> {
+class _DogAdsState extends State<DogAds> {
   @override
   void initState() {
     my_favourits.clear();
@@ -92,20 +92,22 @@ class _AllAdsState extends State<AllAds> {
 
           if (data.child("ad_status").value.toString() == "true") {
           } else {
-            advertisements.add(Advertisements(
-                image_url: data.child("img_url").value.toString(),
-                pet_name: data.child("pet_name").value.toString(),
-                breed: data.child("breed").value.toString(),
-                gender: gend,
-                add_id: data.child("ad_id").value.toString(),
-                creation_date: data.child("creation_date").value.toString(),
-                creation_time: data.child("creation_time").value.toString(),
-                pet_dob: data.child("pet_dob").value.toString(),
-                pet_type: data.child("pet_type").value.toString(),
-                weight: data.child("pet_weight").value.toString(),
-                user_id: data.child("user_id").value.toString(),
-                user_type: data.child("user_type").value.toString(),
-                price: data.child("price").value.toString()));
+            if (data.child("pet_type").value.toString() == "Dog") {
+              advertisements.add(Advertisements(
+                  image_url: data.child("img_url").value.toString(),
+                  pet_name: data.child("pet_name").value.toString(),
+                  breed: data.child("breed").value.toString(),
+                  gender: gend,
+                  add_id: data.child("ad_id").value.toString(),
+                  creation_date: data.child("creation_date").value.toString(),
+                  creation_time: data.child("creation_time").value.toString(),
+                  pet_dob: data.child("pet_dob").value.toString(),
+                  pet_type: data.child("pet_type").value.toString(),
+                  weight: data.child("pet_weight").value.toString(),
+                  user_id: data.child("user_id").value.toString(),
+                  user_type: data.child("user_type").value.toString(),
+                  price: data.child("price").value.toString()));
+            }
           }
         }
         setState(() {
@@ -149,7 +151,7 @@ class _AllAdsState extends State<AllAds> {
         ],
         title: Center(
           child: Text(
-            "All Ads",
+            "Showing Dogs",
             style: TextStyle(
               fontSize: 24,
               color: Colors.black,

@@ -65,12 +65,22 @@ List<String> my_favourits = [];
 List<Color> fav_color = [];
 
 class _HomePageState extends State<HomePage> {
+  // @override
+  // void initState() {
+
+  //   // TODO: implement initState
+
+  //   getAds();
+
+  //   super.initState();
+  // }
+
   @override
-  void initState() {
-    my_favourits.clear();
+  Widget build(BuildContext context) {
     DatabaseReference favDatabase = FirebaseDatabase.instance
         .ref("users/" + FirebaseAuth.instance.currentUser!.uid + "/favourites");
     favDatabase.onValue.listen((event) {
+      my_favourits.clear();
       for (var data in event.snapshot.children) {
         my_favourits.add(data.key.toString());
       }
@@ -124,20 +134,13 @@ class _HomePageState extends State<HomePage> {
           }
         });
 
-        // print("Ads: " + advertisements[0].pet_dob);
+        print("Ads: " + advertisements[0].pet_dob);
       });
       return advertisements;
     }
 
-    // TODO: implement initState
-
     getAds();
 
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -156,29 +159,29 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 30,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Color.fromARGB(35, 0, 0, 0),
-                        blurRadius: 12,
-                        offset: Offset(8, 8))
-                  ]),
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: 'Search',
-                    fillColor: Colors.transparent,
-                    filled: true,
-                    border: InputBorder.none,
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Image.asset(
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, "searchScreen"),
+              child: Container(
+                padding:
+                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Color.fromARGB(35, 0, 0, 0),
+                          blurRadius: 12,
+                          offset: Offset(8, 8))
+                    ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Search"),
+                      Image.asset(
                         "assets/search_bar_ic.png",
-                        height: 5,
+                        height: 30,
                       ),
-                    )),
+                    ]),
               ),
             ),
             const SizedBox(

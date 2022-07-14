@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +64,11 @@ List<String> my_favourits = [];
 
 class _FavouritesState extends State<Favourites> {
   @override
-  void initState() {
-    my_favourits.clear();
+  Widget build(BuildContext context) {
     DatabaseReference favDatabase = FirebaseDatabase.instance
         .ref("users/" + FirebaseAuth.instance.currentUser!.uid + "/favourites");
     favDatabase.onValue.listen((event) {
+      my_favourits.clear();
       for (var data in event.snapshot.children) {
         my_favourits.add(data.key.toString());
       }
@@ -79,7 +81,7 @@ class _FavouritesState extends State<Favourites> {
           FirebaseDatabase.instance.ref("advertisements");
 
       databaseReference.onValue.listen((event) {
-        advertisements.clear();
+        all_ads.clear();
         for (var data in event.snapshot.children) {
           var gend;
           if (data.child("pet_gender").value.toString() == "Male") {
@@ -110,24 +112,13 @@ class _FavouritesState extends State<Favourites> {
         }
         setState(() {
           all_ads = all_ads.reversed.toList();
+          print(all_ads[1].pet_name);
+          advertisements.clear();
           for (int i = 0; i < all_ads.length; i++) {
             if (my_favourits.contains(all_ads[i].add_id)) {
-              advertisements.add(Advertisements(
-                  image_url: all_ads[i].image_url,
-                  pet_name: all_ads[i].pet_name,
-                  breed: all_ads[i].breed,
-                  gender: all_ads[i].gender,
-                  add_id: all_ads[i].add_id,
-                  creation_date: all_ads[i].creation_date,
-                  creation_time: all_ads[i].creation_time,
-                  pet_dob: all_ads[i].pet_dob,
-                  pet_type: all_ads[i].pet_type,
-                  weight: all_ads[i].weight,
-                  user_id: all_ads[i].user_id,
-                  user_type: all_ads[i].user_type,
-                  price: all_ads[i].price));
+              advertisements.add(all_ads[i]);
             } else {
-              //Do nothing
+              //fav_color.add(theme_color);
             }
             //fav_color.add(theme_color);
           }
@@ -138,14 +129,8 @@ class _FavouritesState extends State<Favourites> {
       return advertisements;
     }
 
-    // TODO: implement initState
-
     getAds();
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
