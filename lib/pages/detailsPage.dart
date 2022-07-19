@@ -336,8 +336,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                 } else {
                                   var chatID = usr +
                                       FirebaseAuth.instance.currentUser!.uid;
-                                  var currentDateTime =
-                                      DateTime.now().toString();
+                                  var currentDateTime = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
 
                                   addChat(
                                       FirebaseAuth.instance.currentUser!.uid,

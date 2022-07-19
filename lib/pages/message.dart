@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -25,13 +26,13 @@ class MessageScreen extends StatefulWidget {
   State<MessageScreen> createState() => _MessageScreenState();
 }
 
-class ChatMessage {
-  String messageContent;
-  String messageType;
-  ChatMessage({required this.messageContent, required this.messageType});
-}
+// class ChatMessage {
+//   String messageContent;
+//   String messageType;
+//   ChatMessage({required this.messageContent, required this.messageType});
+// }
 
-List<ChatMessage> messages = [];
+// List<ChatMessage> messages = [];
 
 int index = 0;
 
@@ -42,7 +43,7 @@ var my_message = "";
 var with_id = "";
 var status = "";
 
-var scrollController = new ScrollController();
+//var scrollController = new ScrollController();
 var text_controller = new TextEditingController();
 
 class _MessageScreenState extends State<MessageScreen> {
@@ -75,51 +76,6 @@ class _MessageScreenState extends State<MessageScreen> {
 
     getStatus();
 
-    getChat() {
-      //print("Working Chat");
-      DatabaseReference databaseReference =
-          FirebaseDatabase.instance.ref("chats/" + chat_id);
-      databaseReference.onValue.listen((event) {
-        messages.clear();
-        for (var data in event.snapshot.children) {
-          messages.add(ChatMessage(
-              messageContent: data.child("message").value.toString(),
-              messageType: data.child("sender").value.toString()));
-          //print("Chat" + data.child("message").value.toString());
-        }
-        // setState(() {});
-        scrollController.jumpTo(scrollController.position.maxScrollExtent);
-
-        try {
-          if (index < messages.length) {
-            //print("if not equal: " + index.toString());
-
-            //scrollController.jumpTo(scrollController.position.maxScrollExtent);
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              setState(() {});
-              index = messages.length;
-            });
-          } else {}
-        } catch (e) {}
-
-        // try {
-        //   if (index != messages.length) {
-        //     setState(() {});
-
-        //     index = messages.length;
-        //   } else {}
-        // } catch (e) {
-        //   ShowToast().showToast(e);
-        // }
-
-        //messages = messages.reversed.toList();
-        //scrollController.jumpTo(scrollController.position.maxScrollExtent);
-      });
-      //scrollController.jumpTo(scrollController.position.maxScrollExtent);
-
-      return messages;
-    }
-
     Future<void> sendMessage(
         String currentDateTime, String msg, String sender) async {
       DatabaseReference firebaseDatabase = FirebaseDatabase.instance.ref(
@@ -140,7 +96,7 @@ class _MessageScreenState extends State<MessageScreen> {
           .onError(
               (error, stackTrace) => ShowToast().showToast(error.toString()))
           .then((value) {
-            scrollController.jumpTo(scrollController.position.maxScrollExtent);
+            //scrollController.jumpTo(scrollController.position.maxScrollExtent);
             // scrollController.animateTo(
             //   scrollController.position.maxScrollExtent,
             //   curve: Curves.easeOut,
@@ -193,40 +149,35 @@ class _MessageScreenState extends State<MessageScreen> {
         children: [
           Container(
             padding: const EdgeInsets.only(bottom: 90),
-            child: ListView.builder(
-              controller: scrollController,
-              itemCount: getChat().length,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              //physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.only(
-                      left: 14, right: 14, top: 10, bottom: 10),
-                  child: ChatBubble(
-                      alignment: (messages[index].messageType !=
+            child: FirebaseAnimatedList(
+                sort: (DataSnapshot a, DataSnapshot b) =>
+                    b.key.toString()!.compareTo(a.key.toString()), //fixed
+                reverse: true,
+                query: FirebaseDatabase.instance.ref("chats/" + chat_id),
+                itemBuilder: (context, snapshot, animation, indedx) {
+                  return ChatBubble(
+                      alignment: (snapshot.child("sender").value.toString() !=
                               FirebaseAuth.instance.currentUser!.uid
                           ? Alignment.topLeft
                           : Alignment.topRight),
                       child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Text(
-                            messages[index].messageContent,
+                            snapshot.child("message").value.toString(),
                             style: const TextStyle(fontSize: 15),
                           )),
-                      backGroundColor: (messages[index].messageType !=
-                              FirebaseAuth.instance.currentUser!.uid
-                          ? Colors.grey.shade200
-                          : Colors.blue[200]),
+                      backGroundColor:
+                          (snapshot.child("sender").value.toString() !=
+                                  FirebaseAuth.instance.currentUser!.uid
+                              ? Colors.grey.shade200
+                              : Colors.blue[200]),
                       clipper: ChatBubbleClipper10(
-                        type: (messages[index].messageType !=
+                        type: (snapshot.child("sender").value.toString() !=
                                 FirebaseAuth.instance.currentUser!.uid
                             ? BubbleType.receiverBubble
                             : BubbleType.sendBubble),
-                      )),
-                );
-              },
-            ),
+                      ));
+                }),
           ),
           Align(
             alignment: Alignment.bottomLeft,
@@ -268,7 +219,8 @@ class _MessageScreenState extends State<MessageScreen> {
                     onTap: () {
                       if (my_message == "") {
                       } else {
-                        var currentDateTime = DateTime.now().toString();
+                        var currentDateTime =
+                            DateTime.now().millisecondsSinceEpoch.toString();
                         var sender = FirebaseAuth.instance.currentUser!.uid;
                         sendMessage(currentDateTime, my_message, sender);
                         text_controller.text = "";
