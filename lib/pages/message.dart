@@ -151,7 +151,7 @@ class _MessageScreenState extends State<MessageScreen> {
             padding: const EdgeInsets.only(bottom: 90),
             child: FirebaseAnimatedList(
                 sort: (DataSnapshot a, DataSnapshot b) =>
-                    b.key.toString()!.compareTo(a.key.toString()), //fixed
+                    b.key.toString().compareTo(a.key.toString()), //fixed
                 reverse: true,
                 query: FirebaseDatabase.instance.ref("chats/" + chat_id),
                 itemBuilder: (context, snapshot, animation, indedx) {
