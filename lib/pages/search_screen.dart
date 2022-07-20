@@ -184,6 +184,12 @@ class _SearchScreenState extends State<SearchScreen> {
               itemBuilder: (context, index) {
                 return Container(
                   child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, "details", arguments: {
+                        "ad_id": filteredAds[index].add_id,
+                        "user_id": filteredAds[index].user_id
+                      });
+                    },
                     leading: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(

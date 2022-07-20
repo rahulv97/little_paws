@@ -15,6 +15,8 @@ class DetailsPage extends StatefulWidget {
   State<DetailsPage> createState() => _DetailsPageState();
 }
 
+var my_city = "", user_city = "";
+
 var img_url = "",
     pet_name = "",
     breed = "",
@@ -67,6 +69,8 @@ class _DetailsPageState extends State<DetailsPage> {
           my_image = event.snapshot.child("profilePic").value.toString();
           my_first = event.snapshot.child("first_name").value.toString();
           my_last = event.snapshot.child("last_name").value.toString();
+          my_city = event.snapshot.child("city").value.toString();
+
           //print(first_name);
           //print(user_img);
         });
@@ -96,6 +100,7 @@ class _DetailsPageState extends State<DetailsPage> {
             "currentDateTime": currentDateTime,
             "with_img": with_img,
             "with_name": with_name,
+            "with_city": my_city
           })
           .onError(
               (error, stackTrace) => ShowToast().showToast(error.toString()))
@@ -121,6 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
             "currentDateTime": currentDateTime,
             "with_img": with_img,
             "with_name": with_name,
+            "with_city": user_city
           })
           .onError(
               (error, stackTrace) => ShowToast().showToast(error.toString()))
@@ -140,6 +146,8 @@ class _DetailsPageState extends State<DetailsPage> {
           user_img = event.snapshot.child("profilePic").value.toString();
           first_name = event.snapshot.child("first_name").value.toString();
           last_name = event.snapshot.child("last_name").value.toString();
+          user_city = event.snapshot.child("city").value.toString();
+
           //print(first_name);
           //print(user_img);
         });

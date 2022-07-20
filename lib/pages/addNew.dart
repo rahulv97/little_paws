@@ -10,6 +10,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../showToast.dart';
 
+bool booll = true;
+
 class AddnewAd extends StatefulWidget {
   const AddnewAd({Key? key}) : super(key: key);
 
@@ -46,48 +48,7 @@ String pet_name = "",
 
 String img_down_url = "";
 
-Future<void> uploadFile(String filePath) async {
-  File file = File(filePath);
-
-  try {
-    var snap = await firebase_storage.FirebaseStorage.instance
-        .ref('advertisement_images/' +
-            FirebaseAuth.instance.currentUser!.uid +
-            '/' +
-            ad_id +
-            '.png')
-        .putFile(file);
-
-    await snap.ref.getDownloadURL().then((value) => add_data(value));
-  } catch (e) {
-    // e.g, e.code == 'canceled'
-  }
-}
-
 var context1;
-
-Future<void> add_data(value) async {
-  DatabaseReference firebaseDatabase =
-      FirebaseDatabase.instance.ref("advertisements/" + ad_id);
-  await firebaseDatabase
-      .set({
-        "pet_name": pet_name,
-        "pet_type": pet_type,
-        "breed": breed,
-        "pet_dob": pet_dob,
-        "pet_gender": pet_gender,
-        "pet_weight": pet_weight,
-        "ad_id": ad_id,
-        "creation_time": creation_time,
-        "creation_date": creation_date,
-        "img_url": value,
-        "user_id": FirebaseAuth.instance.currentUser!.uid,
-        "user_type": user_type,
-        "price": price
-      })
-      .onError((error, stackTrace) => ShowToast().showToast(error.toString()))
-      .then((value) => Navigator.pushReplacementNamed(context1, "dashboard"));
-}
 
 class _AddnewAdState extends State<AddnewAd> {
   File? imgFile;
@@ -150,6 +111,64 @@ class _AddnewAdState extends State<AddnewAd> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> add_data(value) async {
+      DatabaseReference firebaseDatabase =
+          FirebaseDatabase.instance.ref("advertisements/" + ad_id);
+      await firebaseDatabase.set({
+        "pet_name": pet_name,
+        "pet_type": pet_type,
+        "breed": breed,
+        "pet_dob": pet_dob,
+        "pet_gender": pet_gender,
+        "pet_weight": pet_weight,
+        "ad_id": ad_id,
+        "creation_time": creation_time,
+        "creation_date": creation_date,
+        "img_url": value,
+        "user_id": FirebaseAuth.instance.currentUser!.uid,
+        "user_type": user_type,
+        "price": price
+      }).onError((error, stackTrace) {
+        setState(() {
+          booll = true;
+        });
+        ShowToast().showToast(error.toString());
+      }).then((value) {
+        setState(() {
+          booll = true;
+        });
+        Navigator.pushReplacementNamed(context1, "dashboard");
+      });
+    }
+
+    Future<void> uploadFile(String filePath) async {
+      File file = File(filePath);
+
+      try {
+        var snap = await firebase_storage.FirebaseStorage.instance
+            .ref('advertisement_images/' +
+                FirebaseAuth.instance.currentUser!.uid +
+                '/' +
+                ad_id +
+                '.png')
+            .putFile(file);
+
+        await snap.ref
+            .getDownloadURL()
+            .then((value) => add_data(value))
+            .onError((error, stackTrace) {
+          setState(() {
+            booll = true;
+          });
+        });
+      } catch (e) {
+        setState(() {
+          booll = true;
+        });
+        // e.g, e.code == 'canceled'
+      }
+    }
+
     getProfile();
     return Scaffold(
       body: Stack(
@@ -596,6 +615,9 @@ class _AddnewAdState extends State<AddnewAd> {
                       ShowToast().showToast("Gender is Required");
                     } else {
                       ShowToast().showToast("Uploading Your Ad Please Wait");
+                      setState(() {
+                        booll = false;
+                      });
                       uploadFile(imgFile!.path);
                     }
                   },
@@ -627,7 +649,13 @@ class _AddnewAdState extends State<AddnewAd> {
                 ),
               ],
             ),
-          )
+          ),
+          booll
+              ? Container()
+              : Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Center(child: CircularProgressIndicator()),
+                )
         ],
       ),
     );

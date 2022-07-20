@@ -134,24 +134,6 @@ class _EditPageState extends State<EditPage> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 32,
-                              width: 32,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(500),
-                                color: Colors.white,
-                              ),
-                              child: Icon(
-                                Icons.favorite,
-                                color: theme_color,
-                                size: 20,
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),

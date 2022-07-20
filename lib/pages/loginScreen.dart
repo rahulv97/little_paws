@@ -9,6 +9,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:little_paws/colors.dart';
 import 'package:little_paws/showToast.dart';
 
+bool booll = true;
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -68,10 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   "Login to your account",
                   style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Bold',
-                      fontSize: 22,
-                      ),
+                    color: Colors.black,
+                    fontFamily: 'Bold',
+                    fontSize: 22,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, top: 20),
@@ -296,14 +298,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         showToast("Please enter a valid password!");
                       } else {
                         try {
-                          signIn(email, password)
-                              .onError((error, stackTrace) =>
-                                  showToast(error.toString()))
-                              .then((value) {
-                            showToast(firebaseAuth.currentUser.toString());
+                          setState(() {
+                            booll = false;
+                          });
+                          signIn(email, password).onError((error, stackTrace) {
+                            setState(() {
+                              booll = true;
+                            });
+                            //Navigator.of(context, rootNavigator: true).pop();
+                            showToast(error.toString());
+                          }).then((value) {
                             DatabaseReference databaseReference =
                                 FirebaseDatabase.instance.ref("users");
-
+                            setState(() {
+                              booll = true;
+                            });
+                            //Navigator.of(context, rootNavigator: true).pop();
                             databaseReference.onValue.listen((event) {
                               if (event.snapshot
                                   .child(FirebaseAuth.instance.currentUser!.uid)
@@ -317,6 +327,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           });
                         } catch (e) {
+                          setState(() {
+                            booll = true;
+                          });
+                          //Navigator.of(context, rootNavigator: true).pop();
                           showToast(e.toString());
                         }
                       }
@@ -347,7 +361,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-          ])
+          ]),
+          booll
+              ? Container()
+              : Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Center(child: CircularProgressIndicator()),
+                )
         ],
       ),
     );

@@ -7,6 +7,7 @@ import 'package:little_paws/onboarding/onboarding2.dart';
 import 'package:little_paws/onboarding/onboarding3.dart';
 import 'package:little_paws/pages/allAds.dart';
 import 'package:little_paws/pages/catAds.dart';
+import 'package:little_paws/pages/chatScreenPage.dart';
 import 'package:little_paws/pages/contactUs.dart';
 import 'package:little_paws/pages/createProfile.dart';
 import 'package:little_paws/pages/dashboard.dart';
@@ -18,6 +19,7 @@ import 'package:little_paws/pages/forgetpass.dart';
 import 'package:little_paws/pages/ind_editProfile.dart';
 import 'package:little_paws/pages/loginScreen.dart';
 import 'package:little_paws/pages/message.dart';
+import 'package:little_paws/pages/myProfile_page.dart';
 import 'package:little_paws/pages/registerScreen.dart';
 import 'package:little_paws/pages/search_screen.dart';
 import 'package:little_paws/pages/shopRegister.dart';
@@ -78,7 +80,9 @@ class MyApp extends StatelessWidget {
         "catAds": (context) => const CatAds(),
         "ind_editProfile": (context) => const IndEditProfile(),
         "contactUs": (context) => const ContactUs(),
-        "searchScreen": (context) => const SearchScreen()
+        "searchScreen": (context) => const SearchScreen(),
+        "myProfilePage":(context) => const MyProfilePage(),
+        "chatPage": (context) => const ChatScreenPage()
       },
     );
   }
@@ -117,7 +121,9 @@ class MyApp1 extends StatelessWidget {
         "catAds": (context) => const CatAds(),
         "ind_editProfile": (context) => const IndEditProfile(),
         "contactUs": (context) => const ContactUs(),
-        "searchScreen": (context) => const SearchScreen()
+        "searchScreen": (context) => const SearchScreen(),
+        "myProfilePage":(context) => const MyProfilePage(),
+        "chatPage": (context) => const ChatScreenPage()
       },
     );
   }
@@ -156,7 +162,10 @@ class MyApp2 extends StatelessWidget {
         "catAds": (context) => const CatAds(),
         "ind_editProfile": (context) => const IndEditProfile(),
         "contactUs": (context) => const ContactUs(),
-        "searchScreen": (context) => const SearchScreen()
+        "searchScreen": (context) => const SearchScreen(),
+        "myProfilePage":(context) => const MyProfilePage(),
+        "chatPage": (context) => const ChatScreenPage()
+        
       },
     );
   }

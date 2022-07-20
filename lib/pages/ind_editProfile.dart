@@ -11,6 +11,8 @@ import 'package:little_paws/showToast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+bool booll = true;
+
 class IndEditProfile extends StatefulWidget {
   const IndEditProfile({Key? key}) : super(key: key);
 
@@ -22,22 +24,6 @@ File? imgFile;
 
 String img_down_url = "";
 
-Future<void> uploadFile(String filePath) async {
-  File file = File(filePath);
-
-  try {
-    var snap = await firebase_storage.FirebaseStorage.instance
-        .ref('profilePics/' +
-            FirebaseAuth.instance.currentUser!.uid +
-            '/profile_pic.png')
-        .putFile(file);
-
-    await snap.ref.getDownloadURL().then((value) => add_data(value));
-  } catch (e) {
-    // e.g, e.code == 'canceled'
-  }
-}
-
 var context1;
 
 String first_name = first_name_person.text,
@@ -47,44 +33,6 @@ String first_name = first_name_person.text,
     address = address_cont.text,
     city = city_person.text,
     state = state_cont.text;
-
-Future<void> add_data(value) async {
-  DatabaseReference firebaseDatabase = FirebaseDatabase.instance
-      .ref("users/" + FirebaseAuth.instance.currentUser!.uid);
-
-  if (imgFile == null) {
-    await firebaseDatabase
-        .update({
-          "shop_name": shop_name_cont.text,
-          "first_name": first_name,
-          "last_name": last_name,
-          "country": country,
-          "phone": phone,
-          "address": address,
-          "city": city,
-          "state": state,
-          "user_type": "Individual"
-        })
-        .onError((error, stackTrace) => ShowToast().showToast(error.toString()))
-        .then((value) => Navigator.pushReplacementNamed(context1, "dashboard"));
-  } else {
-    await firebaseDatabase
-        .update({
-          "shop_name": shop_name_cont.text,
-          "profilePic": value,
-          "first_name": first_name,
-          "last_name": last_name,
-          "country": country,
-          "phone": phone,
-          "address": address,
-          "city": city,
-          "state": state,
-          "user_type": "Individual"
-        })
-        .onError((error, stackTrace) => ShowToast().showToast(error.toString()))
-        .then((value) => Navigator.pushReplacementNamed(context1, "dashboard"));
-  }
-}
 
 Image hello() {
   Image image = Image.asset(
@@ -196,6 +144,84 @@ class _IndEditProfileState extends State<IndEditProfile> {
         prof_type = false;
       }
     });
+
+    Future<void> add_data(value) async {
+      DatabaseReference firebaseDatabase = FirebaseDatabase.instance
+          .ref("users/" + FirebaseAuth.instance.currentUser!.uid);
+
+      if (imgFile == null) {
+        await firebaseDatabase.update({
+          "shop_name": shop_name_cont.text,
+          "first_name": first_name,
+          "last_name": last_name,
+          "country": country,
+          "phone": phone,
+          "address": address,
+          "city": city,
+          "state": state,
+          "user_type": "Individual"
+        }).onError((error, stackTrace) {
+          setState(() {
+            booll = true;
+          });
+          ShowToast().showToast(error.toString());
+        }).then((value) {
+          setState(() {
+            booll = true;
+          });
+          Navigator.pushReplacementNamed(context1, "dashboard");
+        });
+      } else {
+        await firebaseDatabase.update({
+          "shop_name": shop_name_cont.text,
+          "profilePic": value,
+          "first_name": first_name,
+          "last_name": last_name,
+          "country": country,
+          "phone": phone,
+          "address": address,
+          "city": city,
+          "state": state,
+          "user_type": "Individual"
+        }).onError((error, stackTrace) {
+          setState(() {
+            booll = true;
+          });
+          ShowToast().showToast(error.toString());
+        }).then((value) {
+          setState(() {
+            booll = true;
+          });
+          Navigator.pushReplacementNamed(context1, "dashboard");
+        });
+      }
+    }
+
+    Future<void> uploadFile(String filePath) async {
+      File file = File(filePath);
+
+      try {
+        var snap = await firebase_storage.FirebaseStorage.instance
+            .ref('profilePics/' +
+                FirebaseAuth.instance.currentUser!.uid +
+                '/profile_pic.png')
+            .putFile(file);
+
+        await snap.ref
+            .getDownloadURL()
+            .then((value) => add_data(value))
+            .onError((error, stackTrace) {
+          setState(() {
+            booll = true;
+          });
+        });
+      } catch (e) {
+        setState(() {
+          booll = true;
+        });
+        // e.g, e.code == 'canceled'
+      }
+    }
 
     return Scaffold(
       body: Stack(
@@ -449,6 +475,9 @@ class _IndEditProfileState extends State<IndEditProfile> {
                           } else if (state.isEmpty) {
                             ShowToast().showToast("State is Required");
                           } else {
+                            setState(() {
+                              booll = false;
+                            });
                             add_data("");
                           }
                         } else {
@@ -465,6 +494,9 @@ class _IndEditProfileState extends State<IndEditProfile> {
                           } else if (state.isEmpty) {
                             ShowToast().showToast("State is Required");
                           } else {
+                            setState(() {
+                              booll = false;
+                            });
                             uploadFile(imgFile!.path);
                           }
                         }
@@ -496,7 +528,13 @@ class _IndEditProfileState extends State<IndEditProfile> {
                 ),
               ],
             ),
-          ])
+          ]),
+          booll
+              ? Container()
+              : Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Center(child: CircularProgressIndicator()),
+                )
         ],
       ),
     );

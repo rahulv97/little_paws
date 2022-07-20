@@ -11,6 +11,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+bool booll = true;
+
 makeToast(message) {
   return Fluttertoast.showToast(
     msg: message,
@@ -279,11 +281,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ShowToast().showToast(
                               "Password and Confirm Password should be same");
                         } else {
+                          setState(() {
+                            booll = false;
+                          });
+
                           register(email, password)
-                              .onError((error, stackTrace) =>
-                                  ShowToast().showToast(error.toString()))
-                              .then((value) {
+                              .onError((error, stackTrace) {
+                            ShowToast().showToast(error.toString());
+                            setState(() {
+                              booll = true;
+                            });
+                          }).then((value) {
                             if (firebaseAuth.currentUser != null) {
+                              setState(() {
+                                booll = true;
+                              });
+
                               ShowToast()
                                   .showToast("Registeration Successfull");
                               Navigator.pushNamed(context, "user_category");
@@ -318,7 +331,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               )
             ],
-          )
+          ),
+          booll
+              ? Container()
+              : Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Center(child: CircularProgressIndicator()),
+                )
         ],
       ),
     );

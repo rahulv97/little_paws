@@ -14,6 +14,8 @@ import 'package:little_paws/pages/detailsPage.dart';
 
 import '../showToast.dart';
 
+bool booll = true;
+
 File? imgFile;
 
 var context1;
@@ -101,8 +103,18 @@ class _EditAdState extends State<EditAd> {
               '.png')
           .putFile(file);
 
-      await snap.ref.getDownloadURL().then((value) => add_data(value));
+      await snap.ref
+          .getDownloadURL()
+          .then((value) => add_data(value))
+          .onError((error, stackTrace) {
+        setState(() {
+          booll = true;
+        });
+      });
     } catch (e) {
+      setState(() {
+        booll = true;
+      });
       // e.g, e.code == 'canceled'
     }
   }
@@ -134,26 +146,11 @@ class _EditAdState extends State<EditAd> {
 
     await firebaseDatabase.update({"ad_status": swithc.toString()});
 
-    Navigator.pushReplacementNamed(context1, "dashboard");
+    setState(() {
+      booll = true;
+    });
 
-    // await firebaseDatabase
-    //     .update({
-    //       "pet_name": pet_name,
-    //       "pet_type": pet_type,
-    //       "breed": breed,
-    //       "pet_dob": pet_dob,
-    //       "pet_gender": pet_gender,
-    //       "pet_weight": pet_weight,
-    //       "ad_id": ad_id,
-    //       "creation_time": creation_time,
-    //       "creation_date": creation_date,
-    //       "img_url": value,
-    //       "user_id": FirebaseAuth.instance.currentUser!.uid,
-    //       "user_type": user_type,
-    //       "price": price
-    //     })
-    //     .onError((error, stackTrace) => ShowToast().showToast(error.toString()))
-    //     .then((value) => Navigator.pushReplacementNamed(context1, "dashboard"));
+    Navigator.pushReplacementNamed(context1, "dashboard");
   }
 
   @override
@@ -629,6 +626,9 @@ class _EditAdState extends State<EditAd> {
                           price_controller.text == null) {
                         ShowToast().showToast("Price is required");
                       } else {
+                        setState(() {
+                          booll = false;
+                        });
                         add_data("abc");
                         ShowToast().showToast("Updating Your Ad");
                       }
@@ -646,6 +646,9 @@ class _EditAdState extends State<EditAd> {
                           price_controller.text == null) {
                         ShowToast().showToast("Price is required");
                       } else {
+                        setState(() {
+                          booll = false;
+                        });
                         uploadFile(imgFile!.path);
                         ShowToast().showToast("Updating Your Ad");
                       }
@@ -679,7 +682,13 @@ class _EditAdState extends State<EditAd> {
                 ),
               ],
             ),
-          )
+          ),
+          booll
+              ? Container()
+              : Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Center(child: CircularProgressIndicator()),
+                )
         ],
       ),
     );

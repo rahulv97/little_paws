@@ -20,10 +20,23 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
+int index = 0;
+
+var cont;
+
+class GoTo {
+  void goto(int tab) {
+    DefaultTabController.of(cont)!.animateTo(tab);
+  }
+}
+
 class _MainPageState extends State<MainPage> {
   late TabController _tabController;
   @override
   void initState() {
+    setState(() {
+      cont = context;
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -33,6 +46,7 @@ class _MainPageState extends State<MainPage> {
     int _selectedItemPosition = 0;
 
     return DefaultTabController(
+      initialIndex: index,
       length: 5,
       child: Scaffold(
         bottomNavigationBar: ConvexAppBar(

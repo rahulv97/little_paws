@@ -12,13 +12,14 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatsData {
-  String chat_id, current_date_time, user_image, user_name, with_id;
+  String chat_id, current_date_time, user_image, user_name, with_id, with_city;
   ChatsData(
       {required this.chat_id,
       required this.current_date_time,
       required this.user_image,
       required this.user_name,
-      required this.with_id});
+      required this.with_id,
+      required this.with_city});
 }
 
 List<ChatsData> chatsList = [];
@@ -38,7 +39,8 @@ class _ChatScreenState extends State<ChatScreen> {
               current_date_time: data.child("currentDateTime").value.toString(),
               user_image: data.child("with_img").value.toString(),
               user_name: data.child("with_name").value.toString(),
-              with_id: data.key.toString()));
+              with_id: data.key.toString(),
+              with_city: data.child("with_city").value.toString()));
         }
         setState(() {
           chatsList = chatsList.reversed.toList();
@@ -102,19 +104,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         getChats()[index].user_name,
                         style: TextStyle(fontFamily: 'Bold'),
                       ),
-                      subtitle: Text("Location"),
-                      trailing: Container(
-                        width: 22,
-                        height: 22,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "20",
-                          style: TextStyle(color: Colors.white, fontSize: 10),
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(5)),
-                      ),
+                      subtitle: Text(getChats()[index].with_city),
+                      trailing: Icon(Icons.arrow_forward_ios),
                     ),
                   ),
                 );

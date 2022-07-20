@@ -11,6 +11,8 @@ import 'package:little_paws/showToast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+bool booll = true;
+
 class ShopRegister extends StatefulWidget {
   const ShopRegister({Key? key}) : super(key: key);
 
@@ -22,22 +24,6 @@ File? imgFile;
 
 String img_down_url = "";
 
-Future<void> uploadFile(String filePath) async {
-  File file = File(filePath);
-
-  try {
-    var snap = await firebase_storage.FirebaseStorage.instance
-        .ref('profilePics/' +
-            FirebaseAuth.instance.currentUser!.uid +
-            '/profile_pic.png')
-        .putFile(file);
-
-    await snap.ref.getDownloadURL().then((value) => add_data(value));
-  } catch (e) {
-    // e.g, e.code == 'canceled'
-  }
-}
-
 var context1;
 
 String first_name = "",
@@ -48,26 +34,6 @@ String first_name = "",
     city = "",
     state = "",
     shop_name = "";
-
-Future<void> add_data(value) async {
-  DatabaseReference firebaseDatabase = FirebaseDatabase.instance
-      .ref("users/" + FirebaseAuth.instance.currentUser!.uid);
-  await firebaseDatabase
-      .set({
-        "profilePic": value,
-        "first_name": first_name,
-        "last_name": last_name,
-        "country": country,
-        "phone": phone,
-        "address": address,
-        "city": city,
-        "state": state,
-        "shop_name": shop_name,
-        "user_type": "ShopOwner"
-      })
-      .onError((error, stackTrace) => ShowToast().showToast(error.toString()))
-      .then((value) => Navigator.pushReplacementNamed(context1, "dashboard"));
-}
 
 Image hello() {
   Image image = Image.asset(
@@ -128,6 +94,59 @@ class _ShopRegisterState extends State<ShopRegister> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> add_data(value) async {
+      DatabaseReference firebaseDatabase = FirebaseDatabase.instance
+          .ref("users/" + FirebaseAuth.instance.currentUser!.uid);
+      await firebaseDatabase.set({
+        "profilePic": value,
+        "first_name": first_name,
+        "last_name": last_name,
+        "country": country,
+        "phone": phone,
+        "address": address,
+        "city": city,
+        "state": state,
+        "shop_name": shop_name,
+        "user_type": "ShopOwner"
+      }).onError((error, stackTrace) {
+        setState(() {
+          booll = true;
+        });
+        ShowToast().showToast(error.toString());
+      }).then((value) {
+        setState(() {
+          booll = true;
+        });
+        Navigator.pushReplacementNamed(context1, "dashboard");
+      });
+    }
+
+    Future<void> uploadFile(String filePath) async {
+      File file = File(filePath);
+
+      try {
+        var snap = await firebase_storage.FirebaseStorage.instance
+            .ref('profilePics/' +
+                FirebaseAuth.instance.currentUser!.uid +
+                '/profile_pic.png')
+            .putFile(file);
+
+        await snap.ref
+            .getDownloadURL()
+            .then((value) => add_data(value))
+            .onError((error, stackTrace) {
+          setState(() {
+            booll = true;
+          });
+        });
+      } catch (e) {
+        setState(() {
+          booll = true;
+        });
+        // e.g, e.code == 'canceled'
+      }
+    }
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -361,6 +380,9 @@ class _ShopRegisterState extends State<ShopRegister> {
                         } else if (state.isEmpty) {
                           ShowToast().showToast("State is Required");
                         } else {
+                          setState(() {
+                            booll = false;
+                          });
                           uploadFile(imgFile!.path);
                         }
                       },
@@ -391,7 +413,13 @@ class _ShopRegisterState extends State<ShopRegister> {
                 ),
               ],
             ),
-          ])
+          ]),
+          booll
+              ? Container()
+              : Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Center(child: CircularProgressIndicator()),
+                )
         ],
       ),
     );

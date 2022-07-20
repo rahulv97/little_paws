@@ -5,9 +5,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:little_paws/colors.dart';
+import 'package:little_paws/pages/MainPage.dart';
 import 'package:little_paws/showToast.dart';
 
 String profile_img_url = "";
+String user_type = "";
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -73,6 +75,19 @@ class _MenuPageState extends State<MenuPage> {
     // setState(() {
     //   getProfile();
     // });
+    getProfile() async {
+      DatabaseReference databaseReference = FirebaseDatabase.instance
+          .ref("users/" + FirebaseAuth.instance.currentUser!.uid);
+      await databaseReference.onValue.listen((event) {
+        profile_img_url = event.snapshot.child("profilePic").value.toString();
+
+        user_type = event.snapshot.child("user_type").value.toString();
+        ;
+        setState(() {});
+      });
+    }
+
+    getProfile();
     return Scaffold(
       body: Stack(fit: StackFit.expand, children: [
         Container(
@@ -118,7 +133,10 @@ class _MenuPageState extends State<MenuPage> {
                 padding: const EdgeInsets.only(left: 50, top: 20),
                 child: Column(
                   children: [
-                    const ListTile(
+                    ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, "myProfilePage");
+                      },
                       title: Text("Profile"),
                       leading: const Icon(Icons.person),
                       iconColor: Colors.white,
@@ -149,6 +167,7 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
+                      onTap: () => ShowToast().showToast("Coming Soonn..."),
                       title: const Text("Blogs"),
                       leading: Image.asset(
                         "assets/blog_ic.png",
@@ -170,6 +189,9 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, "chatPage");
+                      },
                       title: const Text("Message"),
                       leading: Image.asset(
                         "assets/message_ic.png",
@@ -179,6 +201,15 @@ class _MenuPageState extends State<MenuPage> {
                       textColor: Colors.white,
                     ),
                     ListTile(
+                      onTap: () {
+                        if (user_type == "ShopOwner") {
+                          Navigator.pushNamed(context, "ind_editProfile",
+                              arguments: {"type": "ShopOwner"});
+                        } else {
+                          Navigator.pushNamed(context, "ind_editProfile",
+                              arguments: {"type": "Individual"});
+                        }
+                      },
                       title: const Text("Settings"),
                       leading: Image.asset(
                         "assets/setting_ic.png",
