@@ -11,6 +11,8 @@ import 'package:little_paws/showToast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../services/locationdata.dart';
+
 bool booll = true;
 
 class ShopRegister extends StatefulWidget {
@@ -91,6 +93,10 @@ class _ShopRegisterState extends State<ShopRegister> {
     'Female',
     'Other',
   ];
+
+  String? countryValue;
+  String? stateValue;
+  String? cityValue;
 
   @override
   Widget build(BuildContext context) {
@@ -297,64 +303,89 @@ class _ShopRegisterState extends State<ShopRegister> {
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, right: 10, top: 30),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width / 2.4,
-                        child: TextField(
-                          onChanged: (value) {
-                            city = value;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "City",
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
-                            labelText: "City",
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 231, 231, 231),
-                                width: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 20, top: 30),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width / 2.4,
-                        child: TextField(
-                          onChanged: (value) {
-                            state = value;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "State",
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
-                            labelText: "State",
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 231, 231, 231),
-                                width: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SelectState(
+                    onCountryChanged: (value) {
+                      setState(() {
+                        countryValue = value;
+                      });
+                    },
+                    onStateChanged: (value) {
+                      setState(() {
+                        stateValue = value;
+                        state = value;
+                      });
+                    },
+                    onCityChanged: (value) {
+                      setState(() {
+                        cityValue = value;
+                        city = value;
+                      });
+                    },
+                  ),
                 ),
+
+                // Row(
+                //   children: [
+                //     Padding(
+                //       padding:
+                //           const EdgeInsets.only(left: 20, right: 10, top: 30),
+                //       child: Container(
+                //         height: 50,
+                //         width: MediaQuery.of(context).size.width / 2.4,
+                //         child: TextField(
+                //           onChanged: (value) {
+                //             city = value;
+                //           },
+                //           decoration: InputDecoration(
+                //             hintText: "City",
+                //             border: const OutlineInputBorder(
+                //                 borderRadius:
+                //                     BorderRadius.all(Radius.circular(12))),
+                //             labelText: "City",
+                //             enabledBorder: OutlineInputBorder(
+                //               borderRadius: BorderRadius.circular(12),
+                //               borderSide: const BorderSide(
+                //                 color: Color.fromARGB(255, 231, 231, 231),
+                //                 width: 0.5,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding:
+                //           const EdgeInsets.only(left: 10, right: 20, top: 30),
+                //       child: Container(
+                //         height: 50,
+                //         width: MediaQuery.of(context).size.width / 2.4,
+                //         child: TextField(
+                //           onChanged: (value) {
+                //             state = value;
+                //           },
+                //           decoration: InputDecoration(
+                //             hintText: "State",
+                //             border: const OutlineInputBorder(
+                //                 borderRadius:
+                //                     BorderRadius.all(Radius.circular(12))),
+                //             labelText: "State",
+                //             enabledBorder: OutlineInputBorder(
+                //               borderRadius: BorderRadius.circular(12),
+                //               borderSide: const BorderSide(
+                //                 color: Color.fromARGB(255, 231, 231, 231),
+                //                 width: 0.5,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 Container(
                   alignment: Alignment.bottomCenter,
                   child: Padding(

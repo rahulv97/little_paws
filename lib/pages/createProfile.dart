@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:little_paws/showToast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import '../services/locationdata.dart';
 
 bool booll = true;
 
@@ -140,6 +141,10 @@ class _CreateProfileState extends State<CreateProfile> {
     'Other',
   ];
 
+  String? countryValue;
+  String? stateValue;
+  String? cityValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -267,63 +272,27 @@ class _CreateProfileState extends State<CreateProfile> {
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, right: 10, top: 30),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width / 2.4,
-                        child: TextField(
-                          onChanged: (value) {
-                            city = value;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "City",
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
-                            labelText: "City",
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 231, 231, 231),
-                                width: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 20, top: 30),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width / 2.4,
-                        child: TextField(
-                          onChanged: (value) {
-                            state = value;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "State",
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
-                            labelText: "State",
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 231, 231, 231),
-                                width: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SelectState(
+                    onCountryChanged: (value) {
+                      setState(() {
+                        countryValue = value;
+                      });
+                    },
+                    onStateChanged: (value) {
+                      setState(() {
+                        stateValue = value;
+                        state = value;
+                      });
+                    },
+                    onCityChanged: (value) {
+                      setState(() {
+                        cityValue = value;
+                        city = value;
+                      });
+                    },
+                  ),
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
@@ -334,7 +303,21 @@ class _CreateProfileState extends State<CreateProfile> {
                       onTap: () {
                         context1 = context;
                         if (imgFile == null) {
-                          ShowToast().showToast("Please Select a profile pic");
+                          if (first_name.isEmpty) {
+                            ShowToast().showToast("Name is Required");
+                          } else if (last_name.isEmpty) {
+                            ShowToast().showToast("Name is Required");
+                          } else if (phone.isEmpty) {
+                            ShowToast().showToast("Phone Number is Required");
+                          } else if (address.isEmpty) {
+                            ShowToast().showToast("Address is Required");
+                          } else if (city.isEmpty) {
+                            ShowToast().showToast("City is Required");
+                          } else if (state.isEmpty) {
+                            ShowToast().showToast("State is Required");
+                          } else {
+                            add_data("abc");
+                          }
                         } else if (first_name.isEmpty) {
                           ShowToast().showToast("Name is Required");
                         } else if (last_name.isEmpty) {

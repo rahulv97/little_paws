@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: file_names
 
 import 'dart:async';
 import 'dart:io';
@@ -8,13 +8,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder2/geocoder2.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:little_paws/colors.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:little_paws/pages/createProfile.dart';
 import 'package:little_paws/src/models/pick_result.dart';
 import 'package:little_paws/src/place_picker.dart';
 
@@ -25,13 +23,13 @@ bool booll = true;
 var lat = "";
 var long = "";
 
-class AddnewAd extends StatefulWidget {
-  const AddnewAd({Key? key}) : super(key: key);
+class AddnewPartnerData extends StatefulWidget {
+  const AddnewPartnerData({Key? key}) : super(key: key);
 
   static final kInitialPosition = LatLng(-33.8567844, 151.213108);
 
   @override
-  State<AddnewAd> createState() => _AddnewAdState();
+  State<AddnewPartnerData> createState() => _AddnewPartnerDataState();
 }
 
 var adID;
@@ -65,7 +63,7 @@ String img_down_url = "";
 
 var context1;
 
-class _AddnewAdState extends State<AddnewAd> {
+class _AddnewPartnerDataState extends State<AddnewPartnerData> {
   File? imgFile;
   var heading_style =
       TextStyle(color: dark_selector, fontWeight: FontWeight.w800);
@@ -132,7 +130,7 @@ class _AddnewAdState extends State<AddnewAd> {
   Widget build(BuildContext context) {
     Future<void> add_data(value) async {
       DatabaseReference firebaseDatabase =
-          FirebaseDatabase.instance.ref("advertisements/" + ad_id);
+          FirebaseDatabase.instance.ref("partners/" + ad_id);
       await firebaseDatabase.set({
         "pet_name": pet_name,
         "pet_type": pet_type,
@@ -168,7 +166,7 @@ class _AddnewAdState extends State<AddnewAd> {
 
       try {
         var snap = await firebase_storage.FirebaseStorage.instance
-            .ref('advertisement_images/' +
+            .ref('partner_images/' +
                 FirebaseAuth.instance.currentUser!.uid +
                 '/' +
                 ad_id +
@@ -215,7 +213,7 @@ class _AddnewAdState extends State<AddnewAd> {
                   height: 20,
                 ),
                 Text(
-                  "Upload Pet",
+                  "Add For Partner",
                   style: TextStyle(
                       color: dark_selector, fontSize: 25, fontFamily: 'Bold'),
                 ),
@@ -636,7 +634,8 @@ class _AddnewAdState extends State<AddnewAd> {
                           builder: (context) {
                             return PlacePicker(
                               apiKey: "AIzaSyAa2r0evELr-zQULo0zw-uiAYw1dqjV2Co",
-                              initialPosition: AddnewAd.kInitialPosition,
+                              initialPosition:
+                                  AddnewPartnerData.kInitialPosition,
                               useCurrentLocation: true,
                               selectInitialPosition: true,
                               onPlacePicked: (result) {

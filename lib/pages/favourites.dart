@@ -132,6 +132,7 @@ class _FavouritesState extends State<Favourites> {
     getAds();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,

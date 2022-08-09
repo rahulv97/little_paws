@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 import 'package:little_paws/pages/addNew.dart';
+import 'package:little_paws/pages/partnershome.dart';
 import 'package:little_paws/showToast.dart';
 
 class HomePage extends StatefulWidget {
@@ -147,46 +148,34 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Little Paws",
-              style: TextStyle(
-                  fontSize: 24, color: Colors.black, fontFamily: 'Bold'),
+            SizedBox(
+              height: 20,
             ),
-            const Text(
-              "Pet Brings Happiness",
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, "searchScreen"),
-              child: Container(
-                padding:
-                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Color.fromARGB(35, 0, 0, 0),
-                          blurRadius: 12,
-                          offset: Offset(8, 8))
-                    ]),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Search"),
-                      Image.asset(
-                        "assets/search_bar_ic.png",
-                        height: 30,
-                      ),
-                    ]),
-              ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
+            // GestureDetector(
+            //   onTap: () => Navigator.pushNamed(context, "searchScreen"),
+            //   child: Container(
+            //     padding:
+            //         EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+            //     decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //         color: Colors.white,
+            //         boxShadow: const [
+            //           BoxShadow(
+            //               color: Color.fromARGB(35, 0, 0, 0),
+            //               blurRadius: 12,
+            //               offset: Offset(8, 8))
+            //         ]),
+            //     child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           Text("Search"),
+            //           Image.asset(
+            //             "assets/search_bar_ic.png",
+            //             height: 30,
+            //           ),
+            //         ]),
+            //   ),
+            // ),
             Row(
               children: [
                 Expanded(
@@ -214,44 +203,58 @@ class _HomePageState extends State<HomePage> {
                   width: 20,
                 ),
                 Expanded(
-                    child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 226, 233, 254),
-                      borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.only(
-                      right: 10, left: 10, top: 3, bottom: 3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/sell_filter.png",
-                        height: 18,
-                      ),
-                      const Text("  Sell")
-                    ],
+                    child: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AddnewAd()));
+                  },
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 226, 233, 254),
+                        borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.only(
+                        right: 10, left: 10, top: 3, bottom: 3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/sell_filter.png",
+                          height: 18,
+                        ),
+                        const Text("  Sell")
+                      ],
+                    ),
                   ),
                 )),
                 const SizedBox(
                   width: 20,
                 ),
                 Expanded(
-                    child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 233, 255, 223),
-                      borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.only(
-                      right: 10, left: 10, top: 3, bottom: 3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/partner_filter.png",
-                        height: 18,
-                      ),
-                      const Text("  Partner")
-                    ],
+                    child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PartnersHome()));
+                  },
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 233, 255, 223),
+                        borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.only(
+                        right: 10, left: 10, top: 3, bottom: 3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/partner_filter.png",
+                          height: 18,
+                        ),
+                        const Text("  Partner")
+                      ],
+                    ),
                   ),
                 ))
               ],

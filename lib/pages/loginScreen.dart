@@ -76,32 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 20),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Login",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
-                          color: dark_selector,
-                          fontFamily: 'Bold'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 8),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    child: const Text(
-                      "Login With Your Account To Continue",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
                   child: Container(
                     height: 50,
