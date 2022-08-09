@@ -1,13 +1,29 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 
-class MyPartnerAd extends StatefulWidget {
-  const MyPartnerAd({Key? key}) : super(key: key);
+class SearchPartnerPage extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
+  final search_pet_type;
+  // ignore: prefer_typing_uninitialized_variables
+  final search_gender_type;
+  // ignore: prefer_typing_uninitialized_variables
+  final search_breed_type;
+  // ignore: prefer_typing_uninitialized_variables
+  final search_range_type;
+  const SearchPartnerPage(
+      {Key? key,
+      this.search_pet_type,
+      this.search_gender_type,
+      this.search_breed_type,
+      this.search_range_type})
+      : super(key: key);
 
   @override
-  State<MyPartnerAd> createState() => _MyPartnerAdState();
+  State<SearchPartnerPage> createState() => _SearchPartnerPageState();
 }
 
 class Advertisements {
@@ -42,7 +58,7 @@ class Advertisements {
 
 List<Advertisements> advertisements = [];
 
-class _MyPartnerAdState extends State<MyPartnerAd> {
+class _SearchPartnerPageState extends State<SearchPartnerPage> {
   @override
   Widget build(BuildContext context) {
     getAds() {
