@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -5,6 +7,7 @@ import 'package:little_paws/colors.dart';
 import 'package:little_paws/pages/addPartnerData.dart';
 import 'package:little_paws/pages/myPartnersAd.dart';
 import 'package:little_paws/pages/partnerSearchscreen.dart';
+import 'package:little_paws/showToast.dart';
 
 class PartnersHome extends StatefulWidget {
   const PartnersHome({Key? key}) : super(key: key);
@@ -22,11 +25,15 @@ class _PartnersHomeState extends State<PartnersHome> {
 
   var position;
 
+  var lat;
+  var long;
+
   void getLatandLong() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print("lat" + position.latitude.toString());
-    print("long" + position.longitude.toString());
+    lat = position.latitude.toString();
+    long = position.longitude.toString();
+    // print("local" + "${lat}");
   }
 
   @override
@@ -309,18 +316,31 @@ class _PartnersHomeState extends State<PartnersHome> {
                           Center(
                             child: CupertinoButton(
                               onPressed: () {
-                                getLatandLong();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SearchPartnerPage(
-                                      search_pet_type: style_val,
-                                      search_gender_type: gender,
-                                      search_breed_type: breed,
-                                      search_range_type: searchRange,
+                                if (style_val == null || style_val == "") {
+                                  ShowToast().showToast("Enter the pet type");
+                                } else if (gender == null || gender == "") {
+                                  ShowToast().showToast("Enter gender");
+                                } else if (breed == null || breed == "") {
+                                  ShowToast().showToast("Enter breed");
+                                } else if (searchRange == 0) {
+                                  ShowToast().showToast("Enter searchrange");
+                                } else {
+                                  getLatandLong();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchPartnerPage(
+                                        search_pet_type: style_val.toString(),
+                                        search_gender_type: gender.toString(),
+                                        search_breed_type: breed.toString(),
+                                        search_range_type:
+                                            searchRange.toString(),
+                                        search_lat: lat.toString(),
+                                        search_long: long.toString(),
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               },
                               child: Container(
                                 alignment: Alignment.center,

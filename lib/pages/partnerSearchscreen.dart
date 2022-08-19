@@ -1,25 +1,29 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_local_variable, prefer_const_constructors, unused_element, unnecessary_brace_in_string_interps
+
+import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:little_paws/colors.dart';
+import 'package:little_paws/showToast.dart';
 
 class SearchPartnerPage extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
   final search_pet_type;
-  // ignore: prefer_typing_uninitialized_variables
   final search_gender_type;
-  // ignore: prefer_typing_uninitialized_variables
   final search_breed_type;
-  // ignore: prefer_typing_uninitialized_variables
   final search_range_type;
+  final search_lat;
+  final search_long;
   const SearchPartnerPage(
       {Key? key,
       this.search_pet_type,
       this.search_gender_type,
       this.search_breed_type,
-      this.search_range_type})
+      this.search_range_type,
+      this.search_lat,
+      this.search_long})
       : super(key: key);
 
   @override
@@ -39,7 +43,9 @@ class Advertisements {
       weight,
       user_id,
       user_type,
-      price;
+      price,
+      endlat,
+      endlong;
   Advertisements(
       {required this.image_url,
       required this.pet_name,
@@ -53,7 +59,9 @@ class Advertisements {
       required this.weight,
       required this.user_id,
       required this.user_type,
-      required this.price});
+      required this.price,
+      required this.endlat,
+      required this.endlong});
 }
 
 List<Advertisements> advertisements = [];
@@ -61,6 +69,19 @@ List<Advertisements> advertisements = [];
 class _SearchPartnerPageState extends State<SearchPartnerPage> {
   @override
   Widget build(BuildContext context) {
+    getDistance(double endlat, double endlong) {
+      double distanceInMeters = Geolocator.distanceBetween(
+          double.parse(widget.search_lat),
+          double.parse(widget.search_long),
+          endlat,
+          endlong);
+      double distanceInKiloMeters = distanceInMeters / 1000;
+      double roundDistanceInKM =
+          double.parse((distanceInKiloMeters).toStringAsFixed(2));
+      var finalDistance = roundDistanceInKM.round();
+      return finalDistance;
+    }
+
     getAds() {
       DatabaseReference databaseReference =
           FirebaseDatabase.instance.ref("partners");
@@ -76,22 +97,38 @@ class _SearchPartnerPageState extends State<SearchPartnerPage> {
             gend = "assets/female_ic.png";
             // print(gend);
           }
-          if (data.child("user_id").value.toString() ==
-              FirebaseAuth.instance.currentUser!.uid) {
+
+          if (data.child("user_id").value.toString() !=
+                  FirebaseAuth.instance.currentUser!.uid &&
+              getDistance(
+                      double.parse(
+                          data.child("pet_address_lat").value.toString()),
+                      double.parse(
+                          data.child("pet_address_long").value.toString())) <=
+                  int.parse(widget.search_range_type) &&
+              data.child("breed").value.toString() ==
+                  widget.search_breed_type &&
+              data.child("pet_type").value.toString() ==
+                  widget.search_pet_type &&
+              data.child("pet_gender").value.toString() ==
+                  widget.search_gender_type) {
             advertisements.add(Advertisements(
-                image_url: data.child("img_url").value.toString(),
-                pet_name: data.child("pet_name").value.toString(),
-                breed: data.child("breed").value.toString(),
-                gender: gend,
-                add_id: data.child("ad_id").value.toString(),
-                creation_date: data.child("creation_date").value.toString(),
-                creation_time: data.child("creation_time").value.toString(),
-                pet_dob: data.child("pet_dob").value.toString(),
-                pet_type: data.child("pet_type").value.toString(),
-                weight: data.child("pet_weight").value.toString(),
-                user_id: data.child("user_id").value.toString(),
-                user_type: data.child("user_type").value.toString(),
-                price: data.child("price").value.toString()));
+              image_url: data.child("img_url").value.toString(),
+              pet_name: data.child("pet_name").value.toString(),
+              breed: data.child("breed").value.toString(),
+              gender: gend,
+              add_id: data.child("ad_id").value.toString(),
+              creation_date: data.child("creation_date").value.toString(),
+              creation_time: data.child("creation_time").value.toString(),
+              pet_dob: data.child("pet_dob").value.toString(),
+              pet_type: data.child("pet_type").value.toString(),
+              weight: data.child("pet_weight").value.toString(),
+              user_id: data.child("user_id").value.toString(),
+              user_type: data.child("user_type").value.toString(),
+              price: data.child("price").value.toString(),
+              endlat: data.child("user_type").value.toString(),
+              endlong: data.child("user_type").value.toString(),
+            ));
           }
         }
         setState(() {
@@ -210,11 +247,11 @@ class _SearchPartnerPageState extends State<SearchPartnerPage> {
                         children: [
                           Text(getAds()[index].breed),
                           GestureDetector(
-                            onTap: () => Navigator.pushNamed(context, "details",
-                                arguments: {
-                                  "ad_id": advertisements[index].add_id,
-                                  "user_id": advertisements[index].user_id
-                                }),
+                            onTap: () => Navigator.pushNamed(
+                                context, "partnerAdDetails", arguments: {
+                              "ad_id": advertisements[index].add_id,
+                              "user_id": advertisements[index].user_id
+                            }),
                             child: Container(
                                 padding: const EdgeInsets.only(
                                     top: 5, bottom: 5, left: 20, right: 20),

@@ -194,11 +194,11 @@ class _MyPartnerAdState extends State<MyPartnerAd> {
                         children: [
                           Text(getAds()[index].breed),
                           GestureDetector(
-                            onTap: () => Navigator.pushNamed(context, "details",
-                                arguments: {
-                                  "ad_id": advertisements[index].add_id,
-                                  "user_id": advertisements[index].user_id
-                                }),
+                            onTap: () => Navigator.pushNamed(
+                                context, "partnerAdDetails", arguments: {
+                              "ad_id": advertisements[index].add_id,
+                              "user_id": advertisements[index].user_id
+                            }),
                             child: Container(
                                 padding: const EdgeInsets.only(
                                     top: 5, bottom: 5, left: 20, right: 20),

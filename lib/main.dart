@@ -20,6 +20,7 @@ import 'package:little_paws/pages/ind_editProfile.dart';
 import 'package:little_paws/pages/loginScreen.dart';
 import 'package:little_paws/pages/message.dart';
 import 'package:little_paws/pages/myProfile_page.dart';
+import 'package:little_paws/pages/partnerAdDetails.dart';
 import 'package:little_paws/pages/registerScreen.dart';
 import 'package:little_paws/pages/search_screen.dart';
 import 'package:little_paws/pages/shopRegister.dart';
@@ -81,8 +82,9 @@ class MyApp extends StatelessWidget {
         "ind_editProfile": (context) => const IndEditProfile(),
         "contactUs": (context) => const ContactUs(),
         "searchScreen": (context) => const SearchScreen(),
-        "myProfilePage":(context) => const MyProfilePage(),
-        "chatPage": (context) => const ChatScreenPage()
+        "myProfilePage": (context) => const MyProfilePage(),
+        "chatPage": (context) => const ChatScreenPage(),
+        "partnerAdDetails": (context) => const PartnerDetails()
       },
     );
   }
@@ -122,8 +124,9 @@ class MyApp1 extends StatelessWidget {
         "ind_editProfile": (context) => const IndEditProfile(),
         "contactUs": (context) => const ContactUs(),
         "searchScreen": (context) => const SearchScreen(),
-        "myProfilePage":(context) => const MyProfilePage(),
-        "chatPage": (context) => const ChatScreenPage()
+        "myProfilePage": (context) => const MyProfilePage(),
+        "chatPage": (context) => const ChatScreenPage(),
+        "partnerAdDetails": (context) => const PartnerDetails()
       },
     );
   }
@@ -163,9 +166,9 @@ class MyApp2 extends StatelessWidget {
         "ind_editProfile": (context) => const IndEditProfile(),
         "contactUs": (context) => const ContactUs(),
         "searchScreen": (context) => const SearchScreen(),
-        "myProfilePage":(context) => const MyProfilePage(),
-        "chatPage": (context) => const ChatScreenPage()
-        
+        "myProfilePage": (context) => const MyProfilePage(),
+        "chatPage": (context) => const ChatScreenPage(),
+        "partnerAdDetails": (context) => const PartnerDetails()
       },
     );
   }
