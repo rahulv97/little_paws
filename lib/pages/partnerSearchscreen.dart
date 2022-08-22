@@ -1,13 +1,10 @@
 // ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_local_variable, prefer_const_constructors, unused_element, unnecessary_brace_in_string_interps
 
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:little_paws/colors.dart';
-import 'package:little_paws/showToast.dart';
 
 class SearchPartnerPage extends StatefulWidget {
   final search_pet_type;
@@ -69,6 +66,12 @@ List<Advertisements> advertisements = [];
 class _SearchPartnerPageState extends State<SearchPartnerPage> {
   @override
   Widget build(BuildContext context) {
+    print("simple" + widget.search_breed_type);
+    print("simple" + widget.search_gender_type);
+    print("simple" + widget.search_range_type);
+    print("simple" + widget.search_lat);
+    print("simple" + widget.search_long);
+
     getDistance(double endlat, double endlong) {
       double distanceInMeters = Geolocator.distanceBetween(
           double.parse(widget.search_lat),
@@ -76,9 +79,11 @@ class _SearchPartnerPageState extends State<SearchPartnerPage> {
           endlat,
           endlong);
       double distanceInKiloMeters = distanceInMeters / 1000;
-      double roundDistanceInKM =
-          double.parse((distanceInKiloMeters).toStringAsFixed(2));
-      var finalDistance = roundDistanceInKM.round();
+      var finalDistance = distanceInKiloMeters.round();
+      // print("local" + "${finalDistance}");
+      // print("local" + "${endlat}");
+      // print("local" + "${endlong}");
+
       return finalDistance;
     }
 

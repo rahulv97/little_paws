@@ -29,15 +29,38 @@ class _PartnersHomeState extends State<PartnersHome> {
   var long;
 
   void getLatandLong() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    lat = position.latitude.toString();
-    long = position.longitude.toString();
-    // print("local" + "${lat}");
+    setState(() {
+      lat = position.latitude.toString();
+      long = position.longitude.toString();
+    });
+    print("simple" + long);
   }
 
   @override
   Widget build(BuildContext context) {
+    getLatandLong();
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -316,6 +339,7 @@ class _PartnersHomeState extends State<PartnersHome> {
                           Center(
                             child: CupertinoButton(
                               onPressed: () {
+                                getLatandLong();
                                 if (style_val == null || style_val == "") {
                                   ShowToast().showToast("Enter the pet type");
                                 } else if (gender == null || gender == "") {
@@ -325,7 +349,6 @@ class _PartnersHomeState extends State<PartnersHome> {
                                 } else if (searchRange == 0) {
                                   ShowToast().showToast("Enter searchrange");
                                 } else {
-                                  getLatandLong();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -340,6 +363,7 @@ class _PartnersHomeState extends State<PartnersHome> {
                                       ),
                                     ),
                                   );
+                                  print("local" + long);
                                 }
                               },
                               child: Container(
