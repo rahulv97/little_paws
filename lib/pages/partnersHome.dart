@@ -41,20 +41,13 @@ class _PartnersHomeState extends State<PartnersHome> {
       }
 
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    setState(() {
-      lat = position.latitude.toString();
-      long = position.longitude.toString();
-    });
+    lat = position.latitude.toString();
+    long = position.longitude.toString();
     print("simple" + long);
   }
 
@@ -339,7 +332,7 @@ class _PartnersHomeState extends State<PartnersHome> {
                           Center(
                             child: CupertinoButton(
                               onPressed: () {
-                                getLatandLong();
+                                //getLatandLong();
                                 if (style_val == null || style_val == "") {
                                   ShowToast().showToast("Enter the pet type");
                                 } else if (gender == null || gender == "") {
