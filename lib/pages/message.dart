@@ -1,26 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_bubble/bubble_type.dart';
-import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_10.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_2.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_3.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_5.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_7.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_8.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_9.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:little_paws/pages/detailsPage.dart';
-
-import '../showToast.dart';
+import 'package:little_paws/services/database_service.dart';
+import 'package:little_paws/services/message_tile.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key}) : super(key: key);
+  final chatID;
+  final usr_img;
+  final name;
+  final with_id;
+  const MessageScreen(
+      {Key? key, this.chatID, this.usr_img, this.name, this.with_id})
+      : super(key: key);
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -47,23 +39,31 @@ var status = "";
 var text_controller = new TextEditingController();
 
 class _MessageScreenState extends State<MessageScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  getChatandAdmin() {
+    DatabaseService().getChats(chat_id).then((val) {
+      setState(() {
+        print("object" + "${chat_id}");
+        chats = val;
+      });
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    setState(() {
-      user_img = arguments["usr_img"];
-      user_name = arguments["name"];
-      chat_id = arguments["chatID"];
-      with_id = arguments["with_id"];
-    });
+  void initState() {
+    user_img = widget.usr_img;
+    user_name = widget.name;
+    chat_id = widget.chatID;
+    with_id = widget.with_id;
 
+    getChatandAdmin();
+
+    super.initState();
+  }
+
+  Stream<QuerySnapshot>? chats;
+
+  @override
+  Widget build(BuildContext context) {
     getStatus() {
       DatabaseReference statusRef =
           FirebaseDatabase.instance.ref("users").child(with_id).child("status");
@@ -76,33 +76,36 @@ class _MessageScreenState extends State<MessageScreen> {
 
     getStatus();
 
-    Future<void> sendMessage(
-        String currentDateTime, String msg, String sender) async {
-      DatabaseReference firebaseDatabase = FirebaseDatabase.instance.ref(
-          "chats/" +
-              chat_id +
-              "/" +
-              currentDateTime
-                  .replaceAll(" ", "")
-                  .replaceAll("-", "")
-                  .replaceAll(".", "")
-                  .replaceAll(":", ""));
-      await firebaseDatabase
-          .set({
-            "message": msg,
-            "sender": sender,
-            "datetime": currentDateTime,
-          })
-          .onError(
-              (error, stackTrace) => ShowToast().showToast(error.toString()))
-          .then((value) {
-            //scrollController.jumpTo(scrollController.position.maxScrollExtent);
-            // scrollController.animateTo(
-            //   scrollController.position.maxScrollExtent,
-            //   curve: Curves.easeOut,
-            //   duration: const Duration(milliseconds: 0),
-            // );
-          });
+    sendMessage(String currentDateTime, String msg, String sender) {
+      if (msg.isNotEmpty) {
+        Map<String, dynamic> chatMessageMap = {
+          "message": msg,
+          "sender": sender,
+          "time": DateTime.now().millisecondsSinceEpoch,
+        };
+
+        DatabaseService().sendMessage(chat_id, chatMessageMap);
+      }
+    }
+
+    chatMessages() {
+      return StreamBuilder(
+        stream: chats,
+        builder: (context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    return MessageTile(
+                        message: snapshot.data.docs[index]['message'],
+                        sender: snapshot.data.docs[index]['sender'],
+                        sentByMe: FirebaseAuth.instance.currentUser!.uid ==
+                            snapshot.data.docs[index]['sender']);
+                  },
+                )
+              : Container();
+        },
+      );
     }
 
     return Scaffold(
@@ -149,37 +152,7 @@ class _MessageScreenState extends State<MessageScreen> {
         children: [
           Container(
             padding: const EdgeInsets.only(bottom: 90),
-            child: FirebaseAnimatedList(
-                sort: (DataSnapshot a, DataSnapshot b) =>
-                    b.key.toString().compareTo(a.key.toString()), //fixed
-                reverse: true,
-                query: FirebaseDatabase.instance
-                    .ref("chats/" + chat_id)
-                    .orderByChild("datetime"),
-                itemBuilder: (context, snapshot, animation, indedx) {
-                  return ChatBubble(
-                      alignment: (snapshot.child("sender").value.toString() !=
-                              FirebaseAuth.instance.currentUser!.uid
-                          ? Alignment.topLeft
-                          : Alignment.topRight),
-                      child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Text(
-                            snapshot.child("message").value.toString(),
-                            style: const TextStyle(fontSize: 15),
-                          )),
-                      backGroundColor:
-                          (snapshot.child("sender").value.toString() !=
-                                  FirebaseAuth.instance.currentUser!.uid
-                              ? Colors.grey.shade200
-                              : Colors.blue[200]),
-                      clipper: ChatBubbleClipper10(
-                        type: (snapshot.child("sender").value.toString() !=
-                                FirebaseAuth.instance.currentUser!.uid
-                            ? BubbleType.receiverBubble
-                            : BubbleType.sendBubble),
-                      ));
-                }),
+            child: chatMessages(),
           ),
           Align(
             alignment: Alignment.bottomLeft,

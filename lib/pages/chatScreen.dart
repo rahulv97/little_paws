@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:little_paws/pages/message.dart';
 import 'package:little_paws/showToast.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -86,13 +87,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: ListTile(
                       onTap: () {
                         //ShowToast().showToast(getChats()[index].with_id);
-                        Navigator.pushNamed(context, "messageScreen",
-                            arguments: {
-                              "chatID": getChats()[index].chat_id,
-                              "usr_img": getChats()[index].user_image,
-                              "name": getChats()[index].user_name,
-                              "with_id": getChats()[index].with_id
-                            });
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MessageScreen(
+                                      chatID: getChats()[index].chat_id,
+                                      usr_img: getChats()[index].user_image,
+                                      name: getChats()[index].user_name,
+                                      with_id: getChats()[index].with_id,
+                                    )));
                       },
                       leading: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
