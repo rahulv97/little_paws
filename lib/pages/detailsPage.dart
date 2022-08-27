@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
 import 'package:little_paws/pages/addNew.dart';
 import 'package:little_paws/pages/editAds.dart';
+import 'package:little_paws/pages/message.dart';
 import 'package:little_paws/showToast.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -106,12 +107,17 @@ class _DetailsPageState extends State<DetailsPage> {
               (error, stackTrace) => ShowToast().showToast(error.toString()))
           .then((value) {
             ShowToast().showToast("Then 2");
-            Navigator.pushNamed(contect1, "messageScreen", arguments: {
-              "chatID": chatID,
-              "usr_img": user_img,
-              "name": first_name + " " + last_name,
-              "with_id": usr
-            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MessageScreen(
+                  chatID: chatID,
+                  usr_img: user_img,
+                  name: first_name + " " + last_name,
+                  with_id: usr,
+                ),
+              ),
+            );
           });
     }
 
