@@ -30,7 +30,8 @@ var img_url = "",
     user_id = "",
     price = "",
     user_type = "",
-    status = "";
+    status = "",
+    user_address = "";
 
 var user_img = "",
     first_name = "",
@@ -92,7 +93,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
 
     Future<void> addChatToSender(String my_id, String with_id, String chatID,
         String currentDateTime, String with_img, with_name) async {
-      ShowToast().showToast("Adding To Sender");
+      //ShowToast().showToast("Adding To Sender");
       DatabaseReference firebaseDatabase =
           FirebaseDatabase.instance.ref("users/" + my_id + "/chats/" + with_id);
       await firebaseDatabase
@@ -106,7 +107,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
           .onError(
               (error, stackTrace) => ShowToast().showToast(error.toString()))
           .then((value) {
-            ShowToast().showToast("Then 2");
+            //ShowToast().showToast("Then 2");
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -123,7 +124,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
 
     Future<void> addChat(String my_id, String with_id, String chatID,
         String currentDateTime, String with_img, with_name) async {
-      ShowToast().showToast("Adding To Own");
+      // ShowToast().showToast("Adding To Own");
       DatabaseReference firebaseDatabase =
           FirebaseDatabase.instance.ref("users/" + my_id + "/chats/" + with_id);
       await firebaseDatabase
@@ -137,7 +138,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
           .onError(
               (error, stackTrace) => ShowToast().showToast(error.toString()))
           .then((value) {
-            ShowToast().showToast("Then 1");
+            // ShowToast().showToast("Then 1");
             addChatToSender(with_id, my_id, chatID, currentDateTime, my_image,
                 my_first + " " + my_last);
           });
@@ -168,11 +169,11 @@ class _PartnerDetailsState extends State<PartnerDetails> {
           .child(usr);
       DatabaseEvent snapshot = await database.once();
       var val = snapshot.snapshot.value.toString();
-      ShowToast().showToast(val);
+      // ShowToast().showToast(val);
       //DataSnapshot snapshot = await databaseReference.once();
 
       setState(() {
-        chat_id = snapshot.snapshot.child(usr).child("chatID").value.toString();
+        chat_id = snapshot.snapshot.child("chatID").value.toString();
       });
 
       if (val == "null") {
@@ -204,6 +205,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
           price = event.snapshot.child("price").value.toString();
           user_type = event.snapshot.child("user_type").value.toString();
           status = event.snapshot.child("ad_status").value.toString();
+          user_address = event.snapshot.child("pet_address").value.toString();
         });
         //getUserDetails(event.snapshot.child("user_id").value.toString());
       });
@@ -338,7 +340,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
                                           )));
                             } else {
                               checkChat().then((value) {
-                                ShowToast().showToast(value);
+                                // ShowToast().showToast(value);
                                 if (value == "true") {
                                   Navigator.pushNamed(contect1, "messageScreen",
                                       arguments: {
@@ -403,8 +405,8 @@ class _PartnerDetailsState extends State<PartnerDetails> {
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          "Full Address",
+                        Text(
+                          user_address,
                           style: TextStyle(
                             color: Colors.black,
                           ),

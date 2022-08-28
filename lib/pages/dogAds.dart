@@ -143,9 +143,12 @@ class _DogAdsState extends State<DogAds> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.search,
-              size: 30,
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, "searchScreen"),
+              child: Icon(
+                Icons.search,
+                size: 30,
+              ),
             ),
           )
         ],

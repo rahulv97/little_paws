@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:little_paws/showToast.dart';
 
+import 'message.dart';
+
 class ChatScreenPage extends StatefulWidget {
   const ChatScreenPage({Key? key}) : super(key: key);
 
@@ -92,20 +94,28 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                         child: ListTile(
                           onTap: () {
                             //ShowToast().showToast(getChats()[index].with_id);
-                            Navigator.pushNamed(context, "messageScreen",
-                                arguments: {
-                                  "chatID": getChats()[index].chat_id,
-                                  "usr_img": getChats()[index].user_image,
-                                  "name": getChats()[index].user_name,
-                                  "with_id": getChats()[index].with_id
-                                });
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MessageScreen(
+                                          chatID: getChats()[index].chat_id,
+                                          usr_img: getChats()[index].user_image,
+                                          name: getChats()[index].user_name,
+                                          with_id: getChats()[index].with_id,
+                                        )));
                           },
                           leading: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                getChats()[index].user_image,
-                                fit: BoxFit.cover,
-                              )),
+                              child: getChats()[index].user_image != "abc"
+                                  ? Image.network(
+                                      getChats()[index].user_image,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "assets/prof_pic.jpg",
+                                      fit: BoxFit.cover,
+                                    )),
                           title: Text(
                             getChats()[index].user_name,
                             style: TextStyle(fontFamily: 'Bold'),

@@ -44,7 +44,7 @@ class _MenuPageState extends State<MenuPage> {
       width: 100,
       fit: BoxFit.cover,
     );
-    if (profile_img_url.isEmpty) {
+    if (profile_img_url.isEmpty || profile_img_url == "abc") {
       image = Image.asset(
         "assets/prof_pic.jpg",
         height: 100,

@@ -92,23 +92,22 @@ class _CatAdsState extends State<CatAds> {
 
           if (data.child("ad_status").value.toString() == "true") {
           } else {
-            if(data.child("pet_type").value.toString()== "Cat"){
-               advertisements.add(Advertisements(
-                image_url: data.child("img_url").value.toString(),
-                pet_name: data.child("pet_name").value.toString(),
-                breed: data.child("breed").value.toString(),
-                gender: gend,
-                add_id: data.child("ad_id").value.toString(),
-                creation_date: data.child("creation_date").value.toString(),
-                creation_time: data.child("creation_time").value.toString(),
-                pet_dob: data.child("pet_dob").value.toString(),
-                pet_type: data.child("pet_type").value.toString(),
-                weight: data.child("pet_weight").value.toString(),
-                user_id: data.child("user_id").value.toString(),
-                user_type: data.child("user_type").value.toString(),
-                price: data.child("price").value.toString()));
+            if (data.child("pet_type").value.toString() == "Cat") {
+              advertisements.add(Advertisements(
+                  image_url: data.child("img_url").value.toString(),
+                  pet_name: data.child("pet_name").value.toString(),
+                  breed: data.child("breed").value.toString(),
+                  gender: gend,
+                  add_id: data.child("ad_id").value.toString(),
+                  creation_date: data.child("creation_date").value.toString(),
+                  creation_time: data.child("creation_time").value.toString(),
+                  pet_dob: data.child("pet_dob").value.toString(),
+                  pet_type: data.child("pet_type").value.toString(),
+                  weight: data.child("pet_weight").value.toString(),
+                  user_id: data.child("user_id").value.toString(),
+                  user_type: data.child("user_type").value.toString(),
+                  price: data.child("price").value.toString()));
             }
-           
           }
         }
         setState(() {
@@ -144,9 +143,12 @@ class _CatAdsState extends State<CatAds> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.search,
-              size: 30,
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, "searchScreen"),
+              child: Icon(
+                Icons.search,
+                size: 30,
+              ),
             ),
           )
         ],

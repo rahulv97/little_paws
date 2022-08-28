@@ -83,7 +83,7 @@ class _MyProfileState extends State<MyProfile> {
       width: 125,
       fit: BoxFit.cover,
     );
-    if (profile_img_url.isEmpty) {
+    if (profile_img_url.isEmpty || profile_img_url == "abc") {
       image = Image.asset(
         "assets/prof_pic.jpg",
         height: 125,

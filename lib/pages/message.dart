@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -28,8 +30,8 @@ class MessageScreen extends StatefulWidget {
 
 int index = 0;
 
-var user_img;
-var user_name;
+var user_img = "";
+var user_name = "";
 var chat_id = "";
 var my_message = "";
 var with_id = "";
@@ -88,19 +90,39 @@ class _MessageScreenState extends State<MessageScreen> {
       }
     }
 
+    ScrollController scrollController = ScrollController();
+
+    scrollList(int index) {
+      int a = 0;
+      if (a == index) {
+        print("Not Scrolling");
+      } else {
+        print("Scrolling Down");
+        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+
+        a = index;
+        print(a);
+      }
+    }
+
     chatMessages() {
       return StreamBuilder(
         stream: chats,
         builder: (context, AsyncSnapshot snapshot) {
+          final reveredList = snapshot.data!.docs.reversed.toList();
           return snapshot.hasData
               ? ListView.builder(
+                  reverse: true,
+                  shrinkWrap: true,
+                  controller: scrollController,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
+                    // scrollList(index);
                     return MessageTile(
-                        message: snapshot.data.docs[index]['message'],
-                        sender: snapshot.data.docs[index]['sender'],
+                        message: reveredList[index]['message'],
+                        sender: reveredList[index]['sender'],
                         sentByMe: FirebaseAuth.instance.currentUser!.uid ==
-                            snapshot.data.docs[index]['sender']);
+                            reveredList[index]['sender']);
                   },
                 )
               : Container();
@@ -117,11 +139,19 @@ class _MessageScreenState extends State<MessageScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                user_img,
-                width: 40,
-                height: 40,
-              ),
+              child: user_img != "abc"
+                  ? Image.network(
+                      user_img,
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      "assets/prof_pic.jpg",
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
+                    ),
             ),
             const SizedBox(
               width: 15,

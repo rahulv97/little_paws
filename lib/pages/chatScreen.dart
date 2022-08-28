@@ -99,10 +99,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       leading: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            getChats()[index].user_image,
-                            fit: BoxFit.cover,
-                          )),
+                          child: getChats()[index].user_image != "abc"
+                              ? Image.network(
+                                  getChats()[index].user_image,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  "assets/prof_pic.jpg",
+                                  fit: BoxFit.cover,
+                                )),
                       title: Text(
                         getChats()[index].user_name,
                         style: TextStyle(fontFamily: 'Bold'),

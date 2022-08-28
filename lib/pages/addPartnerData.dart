@@ -696,8 +696,8 @@ class _AddnewPartnerDataState extends State<AddnewPartnerData> {
                       ShowToast().showToast("Date of Birth is Required");
                     } else if (gender == "null") {
                       ShowToast().showToast("Gender is Required");
-                    } else if (selectedPlace!.formattedAddress == null ||
-                        selectedPlace!.formattedAddress == "") {
+                    } else if (selectedPlace?.formattedAddress == null ||
+                        selectedPlace?.formattedAddress == "") {
                       ShowToast().showToast("Address is Required");
                     } else {
                       ShowToast().showToast("Uploading Your Ad Please Wait");
