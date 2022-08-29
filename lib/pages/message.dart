@@ -13,7 +13,7 @@ class MessageScreen extends StatefulWidget {
   final name;
   final with_id;
   const MessageScreen(
-      {Key? key, this.chatID, this.usr_img, this.name, this.with_id})
+      {Key? key, this.chatID, this.usr_img, this.name, this.with_id, required})
       : super(key: key);
 
   @override
@@ -109,7 +109,7 @@ class _MessageScreenState extends State<MessageScreen> {
       return StreamBuilder(
         stream: chats,
         builder: (context, AsyncSnapshot snapshot) {
-          final reveredList = snapshot.data!.docs.reversed.toList();
+          final reveredList = snapshot.data?.docs.reversed.toList();
           return snapshot.hasData
               ? ListView.builder(
                   reverse: true,

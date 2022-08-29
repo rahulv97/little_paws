@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:little_paws/colors.dart';
-import 'package:little_paws/pages/addNew.dart';
 import 'package:little_paws/pages/editAds.dart';
 import 'package:little_paws/pages/message.dart';
 import 'package:little_paws/showToast.dart';
@@ -342,13 +339,16 @@ class _PartnerDetailsState extends State<PartnerDetails> {
                               checkChat().then((value) {
                                 // ShowToast().showToast(value);
                                 if (value == "true") {
-                                  Navigator.pushNamed(contect1, "messageScreen",
-                                      arguments: {
-                                        "chatID": chat_id,
-                                        "usr_img": user_img,
-                                        "name": first_name + " " + last_name,
-                                        "with_id": usr
-                                      });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MessageScreen(
+                                          chatID: chat_id,
+                                          usr_img: user_img,
+                                          name: first_name + " " + last_name,
+                                          with_id: usr),
+                                    ),
+                                  );
                                 } else {
                                   var chatID = usr +
                                       FirebaseAuth.instance.currentUser!.uid;
@@ -394,7 +394,8 @@ class _PartnerDetailsState extends State<PartnerDetails> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 20, top: 5),
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 20, right: 20),
                     alignment: Alignment.topLeft,
                     child: Row(
                       children: [
@@ -405,12 +406,14 @@ class _PartnerDetailsState extends State<PartnerDetails> {
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(
-                          user_address,
-                          style: TextStyle(
-                            color: Colors.black,
+                        Flexible(
+                          child: Text(
+                            user_address,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.left,
                         )
                       ],
                     ),
@@ -418,7 +421,7 @@ class _PartnerDetailsState extends State<PartnerDetails> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
               Container(
                 padding: const EdgeInsets.only(left: 20),

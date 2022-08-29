@@ -401,7 +401,8 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 20, top: 5),
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 20, right: 20),
                     alignment: Alignment.topLeft,
                     child: Row(
                       children: [
@@ -425,7 +426,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
               Container(
                 padding: const EdgeInsets.only(left: 20),
