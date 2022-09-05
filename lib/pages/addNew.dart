@@ -214,10 +214,22 @@ class _AddnewAdState extends State<AddnewAd> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "Upload Pet",
-                  style: TextStyle(
-                      color: dark_selector, fontSize: 25, fontFamily: 'Bold'),
+                Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(Icons.arrow_back)),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      "Upload Pet",
+                      style: TextStyle(
+                          color: dark_selector,
+                          fontSize: 25,
+                          fontFamily: 'Bold'),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 15,

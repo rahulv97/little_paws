@@ -212,10 +212,22 @@ class _AddnewPartnerDataState extends State<AddnewPartnerData> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "Add For Partner",
-                  style: TextStyle(
-                      color: dark_selector, fontSize: 25, fontFamily: 'Bold'),
+                Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(Icons.arrow_back)),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      "Add For Partner",
+                      style: TextStyle(
+                          color: dark_selector,
+                          fontSize: 25,
+                          fontFamily: 'Bold'),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 15,
