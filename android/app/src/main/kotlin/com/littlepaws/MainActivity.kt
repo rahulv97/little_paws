@@ -1,4 +1,4 @@
-package com.littlepaws
+package com.littletails
 
 import io.flutter.embedding.android.FlutterActivity
 

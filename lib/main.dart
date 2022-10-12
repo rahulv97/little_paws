@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Little Paws',
+      title: 'Little Tails',
       theme: ThemeData(
         primarySwatch: Palette.themeColor,
       ),
@@ -98,7 +98,7 @@ class MyApp1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Little Paws',
+      title: 'Little Tails',
       theme: ThemeData(
         primarySwatch: Palette.themeColor,
       ),
@@ -140,7 +140,7 @@ class MyApp2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Little Paws',
+      title: 'Little Tails',
       theme: ThemeData(
         primarySwatch: Palette.themeColor,
       ),

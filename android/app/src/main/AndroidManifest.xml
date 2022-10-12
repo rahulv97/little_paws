@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.littlepaws">
+    package="com.littletails">
     
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> -->
@@ -11,7 +11,7 @@
     <uses-feature android:name="android.hardware.location.gps" android:required="true"  />
 
    <application
-        android:label="Little Paws"
+        android:label="Little Tails"
         android:name="${applicationName}"
         android:icon="@drawable/app_icon">
         <activity

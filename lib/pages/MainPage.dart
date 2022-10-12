@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
         appBar: AppBar(
           toolbarHeight: 60,
           title: Text(
-            "Little Paws",
+            "Little Tails",
             style: TextStyle(
                 fontSize: 22, color: Colors.black, fontFamily: 'Bold'),
           ),

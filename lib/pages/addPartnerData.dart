@@ -217,9 +217,7 @@ class _AddnewPartnerDataState extends State<AddnewPartnerData> {
                     GestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: Icon(Icons.arrow_back)),
-                    SizedBox(
-                      width: 40,
-                    ),
+                    const SizedBox(width: 40),
                     Text(
                       "Add For Partner",
                       style: TextStyle(
